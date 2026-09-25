@@ -45,7 +45,6 @@
       --callout-info: #1c1a17; --callout-info-t: #ffaa55;
     }
 
-    /* View Transitions API */
     @view-transition { navigation: auto; }
     ::view-transition-old(root) { animation: 0.16s cubic-bezier(0.16, 1, 0.3, 1) both vtOut; }
     ::view-transition-new(root) { animation: 0.2s cubic-bezier(0.16, 1, 0.3, 1) both vtIn; }
@@ -111,16 +110,10 @@
 
     /* 커뮤니티 블러 & 락 오버레이 */
     .community-box {
-      position: relative;
-      margin: 0 16px;
-      border-radius: 4px;
-      overflow: hidden;
+      position: relative; margin: 0 16px; border-radius: 4px; overflow: hidden;
     }
     .community-list-blurred {
-      filter: blur(5px);
-      opacity: 0.35;
-      pointer-events: none;
-      user-select: none;
+      filter: blur(5px); opacity: 0.35; pointer-events: none; user-select: none;
     }
     .community-item { padding: 16px 0; border-bottom: 1px solid var(--divider); }
     .community-item:last-child { border-bottom: none; }
@@ -129,21 +122,11 @@
     .community-footer { display: flex; gap: 14px; font-size: 13px; color: var(--muted); }
     
     .community-lock-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 5;
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 5;
     }
     .community-lock-badge {
-      font-size: 14.5px;
-      color: var(--text);
-      background: var(--bg);
-      padding: 10px 20px;
-      border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-      border: 1px solid var(--border);
+      font-size: 14.5px; color: var(--text); background: var(--bg);
+      padding: 10px 20px; border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); border: 1px solid var(--border);
     }
 
     /* AI 상자 */
@@ -155,7 +138,7 @@
     .ai-textarea::placeholder { color: var(--muted); }
     .ai-send-btn { background: var(--send-btn); color: #fff; padding: 8px 14px; border-radius: 4px; font-size: 13px; gap: 6px; }
 
-    /* 모달 시스템 */
+    /* 모달 시스템 (display 기반 안전 제어) */
     .modal-overlay {
       position: fixed; inset: 0; background: var(--overlay); z-index: 9990;
       display: none; justify-content: center; align-items: flex-end;
@@ -163,19 +146,14 @@
     .modal-overlay.active { display: flex; }
     
     .bottom-sheet {
-      background: var(--modal-bg);
-      border-radius: 16px 16px 0 0;
-      padding: 16px 20px 32px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
+      background: var(--modal-bg); border-radius: 16px 16px 0 0;
+      padding: 16px 20px 32px; width: 100%; max-height: 85vh; overflow-y: auto;
       box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
     }
     .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
     .sheet-item { padding: 14px 10px; border-radius: 6px; }
     .sheet-item:active { background: var(--divider); }
 
-    /* 전체화면 오버레이 (검색, 모바일 네비) */
     .fullscreen-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: none; flex-direction: column; }
     .fullscreen-overlay.active { display: flex; }
     .search-input-wrap { flex: 1; background: var(--input-bg); border-radius: 6px; padding: 8px 12px; gap: 8px; }
@@ -223,17 +201,6 @@
     .feedback-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--bg); border-radius: 4px; font-size: 13px; }
     .feedback-btn.active { background: var(--primary); color: #fff; }
 
-    /* [편집기 전용] GitHub 커밋 푸시 바 */
-    .github-save-action-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--divider); border-radius: 4px; padding: 14px 16px; margin: 24px 0;
-    }
-    .github-repo-badge { font-size: 13px; color: var(--sub); display: flex; align-items: center; gap: 6px; }
-    .github-commit-btn {
-      background: var(--primary); color: #fff; padding: 8px 14px; border-radius: 4px;
-      font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer;
-    }
-
     .doc-pagination { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--divider); }
     .page-nav-card { padding: 16px; background: var(--divider); border-radius: 4px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 4px; }
     .doc-meta-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; font-size: 12px; color: var(--muted); }
@@ -256,6 +223,15 @@
       padding: 40px 16px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6;
     }
 
+    /* 관리자 플로팅 액션 버튼 (미리보기 화면과 관리 기능의 완전한 분리) */
+    .admin-fab {
+      position: fixed; bottom: 20px; right: 20px; z-index: 8000;
+      background: var(--text); color: var(--bg);
+      padding: 10px 18px; border-radius: 30px; font-size: 13.5px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+
     /* PC 데스크톱 화면 (1024px 이상): 중앙 팝업 다이얼로그 */
     @media (min-width: 1024px) {
       header { border-bottom-color: var(--border); padding: 0 32px; }
@@ -264,7 +240,7 @@
 
       .modal-overlay.active { align-items: center; }
       .bottom-sheet {
-        width: 480px; max-width: 90vw;
+        width: 500px; max-width: 90vw;
         border-radius: 8px; padding: 24px 28px;
         box-shadow: 0 16px 40px rgba(0,0,0,0.5);
       }
@@ -348,6 +324,8 @@
     }
     @keyframes fillUp { 0%, 100% { height: 0; } 50% { height: 100%; } }
   
+    /* 배포본에서는 관리자 FAB 숨김 */
+    .admin-fab { display: none !important; }
   </style>
 </head>
 <body>
@@ -383,7 +361,7 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../README.html" class="clickable doc-sidebar-link ">README</a>
+                    <a href="../README.html" class="clickable doc-sidebar-link " data-path="README.md">README</a>
                   </li>
                 
             </ul>
@@ -394,7 +372,7 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link ">개발자의 한마디</a>
+                    <a href="../0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link " data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                   </li>
                 
             </ul>
@@ -405,19 +383,19 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link ">식별자 규칙</a>
+                    <a href="../1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link ">캔버스와 뷰포트 설정</a>
+                    <a href="../1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link ">수치, 단위, 연산</a>
+                    <a href="../1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link ">색상과 텍스쳐</a>
+                    <a href="../1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
                   </li>
                 
             </ul>
@@ -428,23 +406,23 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link ">점과 좌표계 다루기</a>
+                    <a href="../2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link ">연결 연산자와 기본 도형</a>
+                    <a href="../2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link ">기하 내장 계산 엔진</a>
+                    <a href="../2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link ">삼각형의 7대 심</a>
+                    <a href="../2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link ">교점 탐색기</a>
+                    <a href="../2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
                   </li>
                 
             </ul>
@@ -455,19 +433,19 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link ">좌표축과 모눈종이 셋팅</a>
+                    <a href="../3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link ">8방위 알아보기</a>
+                    <a href="../3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link ">기호 지시어</a>
+                    <a href="../3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link ">영역 채우기와 빗금 패턴</a>
+                    <a href="../3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
                   </li>
                 
             </ul>
@@ -478,19 +456,19 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link ">양함수 그래프</a>
+                    <a href="../4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link ">미분과 기하학적 접선</a>
+                    <a href="../4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link ">정적분과 두 곡선 사이의 넓이</a>
+                    <a href="../4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link ">고급 곡선 표현</a>
+                    <a href="../4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
                   </li>
                 
             </ul>
@@ -501,19 +479,19 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link ">벡터와 선형대수</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link ">확률과 통계 시각화</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link ">수형도</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link ">네트워크 그래프</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
                   </li>
                 
             </ul>
@@ -524,19 +502,19 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link ">3D 카메라 뷰포트</a>
+                    <a href="../6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link ">기본 입체도형</a>
+                    <a href="../6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link ">숨은선 자동 점선 처리</a>
+                    <a href="../6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link active">3D 매개변수 곡면</a>
+                    <a href="../6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link active" data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
                   </li>
                 
             </ul>
@@ -547,15 +525,15 @@
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link ">역기하 제약 해결사</a>
+                    <a href="../7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link ">CSG 연산</a>
+                    <a href="../7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link ">재사용 컴포넌트 제작</a>
+                    <a href="../7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
                   </li>
                 
             </ul>
@@ -564,7 +542,7 @@
     </aside>
 
     <div class="app-content">
-      <!-- 100% 동일한 온전한 홈 뷰 (개발자 인터뷰, 아카데미, 슬라이더, 블러 커뮤니티 모두 보존) -->
+      <!-- 100% 동일한 온전한 홈 뷰 (배너, 슬라이더, 블러 커뮤니티 모두 보존) -->
       <main id="home-view" style="display:none;">
         
         <section class="hero-banner flex-center">
@@ -573,12 +551,13 @@ Mathit!</div>
           <div class="hero-bg-m katex-font">M</div>
         </section>
 
+        <!-- 원래의 순수 액션 카드 디자인 -->
         <nav class="action-grid">
           <div class="action-card flex-between clickable" style="background:#ff9e42;">
             <span class="action-title">개발자 인터뷰</span>
             <i class="ph ph-caret-right" style="font-size:20px;"></i>
           </div>
-          <div class="action-card flex-between clickable" style="background:#e65100;">
+          <div class="action-card flex-between clickable" style="background:#e65100;" id="open-loader">
             <span class="action-title">Mathit 아카데미</span>
             <i class="ph ph-caret-right" style="font-size:20px;"></i>
           </div>
@@ -587,7 +566,7 @@ Mathit!</div>
         <section>
           <div class="section-title">Everywhere Mathit!</div>
           <div class="rubber-viewport">
-            <div class="rubber-track">
+            <div class="rubber-track" style="transform: translate3d(0px, 0px, 0px); transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);">
               <div class="card everywhere-card clickable" style="background:#1e293b;">
                 <div class="card-title">웹 플레이그라운드</div>
                 <div style="text-align: right; color:#94a3b8; font-size:20px;"><i class="ph ph-caret-right"></i></div>
@@ -613,6 +592,7 @@ Mathit!</div>
           </div>
         </section>
 
+        <!-- 커뮤니티 (블러 처리 & 오픈되지 않았어요 안내) -->
         <section>
           <div class="section-title">모르겠으면 모두와 함께</div>
           <div class="community-box">
@@ -646,7 +626,7 @@ Mathit!</div>
       
       </main>
 
-      <!-- 독자용 문서 본문 (타깃 레포 푸시 바 같은 관리자 요소 100% 제거) -->
+      <!-- 독자용 문서 본문 -->
       <div id="doc-page-view" style="display:flex;">
         <article class="doc-article-wrap">
           <nav class="breadcrumb">
@@ -832,7 +812,7 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../README.html" class="clickable doc-sidebar-link ">README</a>
+                    <a href="../README.html" class="clickable doc-sidebar-link " data-path="README.md">README</a>
                   </li>
                 
             </ul>
@@ -843,7 +823,7 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link ">개발자의 한마디</a>
+                    <a href="../0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link " data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                   </li>
                 
             </ul>
@@ -854,19 +834,19 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link ">식별자 규칙</a>
+                    <a href="../1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link ">캔버스와 뷰포트 설정</a>
+                    <a href="../1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link ">수치, 단위, 연산</a>
+                    <a href="../1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link ">색상과 텍스쳐</a>
+                    <a href="../1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
                   </li>
                 
             </ul>
@@ -877,23 +857,23 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link ">점과 좌표계 다루기</a>
+                    <a href="../2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link ">연결 연산자와 기본 도형</a>
+                    <a href="../2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link ">기하 내장 계산 엔진</a>
+                    <a href="../2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link ">삼각형의 7대 심</a>
+                    <a href="../2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link ">교점 탐색기</a>
+                    <a href="../2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
                   </li>
                 
             </ul>
@@ -904,19 +884,19 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link ">좌표축과 모눈종이 셋팅</a>
+                    <a href="../3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link ">8방위 알아보기</a>
+                    <a href="../3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link ">기호 지시어</a>
+                    <a href="../3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link ">영역 채우기와 빗금 패턴</a>
+                    <a href="../3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
                   </li>
                 
             </ul>
@@ -927,19 +907,19 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link ">양함수 그래프</a>
+                    <a href="../4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link ">미분과 기하학적 접선</a>
+                    <a href="../4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link ">정적분과 두 곡선 사이의 넓이</a>
+                    <a href="../4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link ">고급 곡선 표현</a>
+                    <a href="../4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
                   </li>
                 
             </ul>
@@ -950,19 +930,19 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link ">벡터와 선형대수</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link ">확률과 통계 시각화</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link ">수형도</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link ">네트워크 그래프</a>
+                    <a href="../5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
                   </li>
                 
             </ul>
@@ -973,19 +953,19 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link ">3D 카메라 뷰포트</a>
+                    <a href="../6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link ">기본 입체도형</a>
+                    <a href="../6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link ">숨은선 자동 점선 처리</a>
+                    <a href="../6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link active">3D 매개변수 곡면</a>
+                    <a href="../6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link active" data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
                   </li>
                 
             </ul>
@@ -996,15 +976,15 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                   <li class="toc-item">
-                    <a href="../7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link ">역기하 제약 해결사</a>
+                    <a href="../7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link ">CSG 연산</a>
+                    <a href="../7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
                   </li>
                 
                   <li class="toc-item">
-                    <a href="../7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link ">재사용 컴포넌트 제작</a>
+                    <a href="../7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
                   </li>
                 
             </ul>
@@ -1103,7 +1083,7 @@ Mathit!</div>
       }
     });
 
-    // 고무줄 슬라이더 초기화
+    // 고무줄 슬라이더 엔진
     class RubberSlider {
       constructor(vp) {
         this.vp = vp;
@@ -1118,10 +1098,10 @@ Mathit!</div>
         this.track.style.transform = 'translate3d(' + x + 'px,0,0)';
       }
       bindEvents() {
-        let sx, lx, lt, isDrag, locked, isH, moved;
+        let sx, lx, lt, isDrag, moved;
         this.vp.onpointerdown = (e) => {
           if (e.pointerType === 'mouse' && e.button !== 0) return;
-          isDrag = true; locked = isH = moved = false;
+          isDrag = true; moved = false;
           sx = lx = e.clientX; lt = performance.now(); this.v = 0;
           const match = this.track.style.transform.match(/translate3d(([-d.]+)px/);
           this.x = match ? parseFloat(match[1]) : 0;

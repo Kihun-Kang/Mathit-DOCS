@@ -72,7 +72,7 @@
       border-bottom: 1px solid transparent;
     }
     .logo { font-size: 32px; font-weight: 700; line-height: 1; }
-    .nav-icon { font-size: 22px; color: var(--text); cursor: pointer; display: flex; }
+    .nav-icon { font-size: 22px; color: var(--text); cursor: pointer; display: flex; align-items: center; }
 
     /* 모바일 서브 헤더 */
     .mobile-toc-bar {
@@ -338,6 +338,8 @@
       <i class="ph ph-magnifying-glass nav-icon" id="open-search" title="검색"></i>
       <i class="ph ph-moon nav-icon" id="btn-theme" title="다크모드"></i>
       <i class="ph ph-gear nav-icon" id="open-settings" title="설정"></i>
+      <i class="ph-fill ph-sparkle nav-icon" id="open-doc-ai" title="AI 메뉴" style="display:flex;"></i>
+      <i class="ph ph-dots-three-vertical nav-icon" id="open-doc-more" title="문서 옵션" style="display:flex;"></i>
     </div>
   </header>
 
@@ -527,11 +529,9 @@
     </aside>
 
     <div class="app-content">
-      <!-- 홈 뷰 -->
       <main id="home-view" style="display:none;">
         <section class="hero-banner flex-center">
-          <div class="hero-text mono">Welcome to
-Mathit!</div>
+          <div class="hero-text mono">Welcome to\nMathit!</div>
           <div class="hero-bg-m katex-font">M</div>
         </section>
         <div style="padding:20px 0; color:var(--text-body); line-height:1.7;">
@@ -539,7 +539,6 @@ Mathit!</div>
         </div>
       </main>
 
-      <!-- 문서 뷰 -->
       <div id="doc-page-view" style="display:flex;">
         <article class="doc-article-wrap">
           <nav class="breadcrumb">
@@ -841,7 +840,6 @@ poly: A--B--C, stroke=1.2pt
 
   <script src="https://cdn.jsdelivr.net/gh/niteoowl/mathit-ren/mathit-ren-4.js"></script>
   <script>
-    // 배포본 전용 인터랙션 스크립트 (다크모드, 모바일 메뉴, 하이라이트)
     const btnTheme = document.getElementById('btn-theme');
     btnTheme.onclick = () => {
       const isDark = document.body.classList.toggle('dark-mode');

@@ -34,7 +34,7 @@
       --send-btn: #0f172a; --code-bg: #f8fafc; --code-text: #0f172a;
       --callout-info: #eff6ff; --callout-info-t: #1e40af;
     }
-    /* 퓨어 무채색 블랙 다크모드 */
+    /* 퓨어 무채색 블랙 다크모드 (푸른빛 100% 제거) */
     body.dark-mode {
       --bg: #000000; --text: #f5f5f7; --text-body: #d1d5db; --sub: #86868b; --muted: #555555;
       --border: #2c2c2e; --divider: #1c1c1e; --input-bg: #1c1c1e;
@@ -175,6 +175,7 @@
     .sheet-item { padding: 14px 10px; border-radius: 6px; }
     .sheet-item:active { background: var(--divider); }
 
+    /* 전체화면 오버레이 (검색, 모바일 네비) */
     .fullscreen-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: none; flex-direction: column; }
     .fullscreen-overlay.active { display: flex; }
     .search-input-wrap { flex: 1; background: var(--input-bg); border-radius: 6px; padding: 8px 12px; gap: 8px; }
@@ -222,6 +223,7 @@
     .feedback-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--bg); border-radius: 4px; font-size: 13px; }
     .feedback-btn.active { background: var(--primary); color: #fff; }
 
+    /* [편집기 전용] GitHub 커밋 푸시 바 */
     .github-save-action-bar {
       display: flex; justify-content: space-between; align-items: center;
       background: var(--divider); border-radius: 4px; padding: 14px 16px; margin: 24px 0;
@@ -254,7 +256,7 @@
       padding: 40px 16px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6;
     }
 
-    /* PC 데스크톱 화면 (1024px 이상) */
+    /* PC 데스크톱 화면 (1024px 이상): 중앙 팝업 다이얼로그 */
     @media (min-width: 1024px) {
       header { border-bottom-color: var(--border); padding: 0 32px; }
       #open-doc { display: none !important; }
@@ -562,7 +564,7 @@
     </aside>
 
     <div class="app-content">
-      <!-- 100% 동일한 온전한 홈 뷰 (배너, 고무줄 슬라이더, 블러 커뮤니티 모두 보존) -->
+      <!-- 100% 동일한 온전한 홈 뷰 (개발자 인터뷰, 아카데미, 슬라이더, 블러 커뮤니티 모두 보존) -->
       <main id="home-view" style="display:none;">
         
         <section class="hero-banner flex-center">
@@ -571,21 +573,14 @@ Mathit!</div>
           <div class="hero-bg-m katex-font">M</div>
         </section>
 
-        <!-- 저장소 불러오기 & 배포 커밋 카드 -->
         <nav class="action-grid">
-          <div class="action-card flex-between clickable" style="background:#ff9e42;" id="open-source-modal">
-            <div>
-              <span class="action-title" style="display:block;">1. 소스 레포 불러오기</span>
-              <span style="font-size:12px; opacity:0.85;">1 폴더 / 1.1 파일.md 자동 정렬</span>
-            </div>
-            <i class="ph ph-git-pull-request" style="font-size:20px;"></i>
+          <div class="action-card flex-between clickable" style="background:#ff9e42;">
+            <span class="action-title">개발자 인터뷰</span>
+            <i class="ph ph-caret-right" style="font-size:20px;"></i>
           </div>
-          <div class="action-card flex-between clickable" style="background:#e65100;" id="open-deploy-modal">
-            <div>
-              <span class="action-title" style="display:block;">2. 타깃 레포로 푸시</span>
-              <span style="font-size:12px; opacity:0.85;">완전한 멀티페이지 웹 배포</span>
-            </div>
-            <i class="ph ph-cloud-arrow-up" style="font-size:20px;"></i>
+          <div class="action-card flex-between clickable" style="background:#e65100;">
+            <span class="action-title">Mathit 아카데미</span>
+            <i class="ph ph-caret-right" style="font-size:20px;"></i>
           </div>
         </nav>
 
@@ -618,7 +613,6 @@ Mathit!</div>
           </div>
         </section>
 
-        <!-- 커뮤니티 (블러 처리 & 오픈되지 않았어요 안내) -->
         <section>
           <div class="section-title">모르겠으면 모두와 함께</div>
           <div class="community-box">
@@ -652,7 +646,7 @@ Mathit!</div>
       
       </main>
 
-      <!-- 문서 뷰 -->
+      <!-- 독자용 문서 본문 (타깃 레포 푸시 바 같은 관리자 요소 100% 제거) -->
       <div id="doc-page-view" style="display:flex;">
         <article class="doc-article-wrap">
           <nav class="breadcrumb">
@@ -708,7 +702,7 @@ Mathit!</div>
     </div>
   </div>
 
-  <!-- [배포본 누락 해결] 모든 모달 일괄 탑재 -->
+  <!-- [독자 전용 모달 탑재: 설정, 검색, AI, 점 세 개 완벽 동작] -->
   <div class="modal-overlay" id="settings-modal">
     <div class="bottom-sheet">
       <div class="sheet-handle"></div>
@@ -717,8 +711,11 @@ Mathit!</div>
         <i class="ph ph-x modal-close-btn clickable" style="font-size:20px; color:var(--sub);"></i>
       </div>
       <div>
+        <a href="https://github.com/Kihun-Kang/mathit-docs" target="_blank" rel="noopener noreferrer" class="sheet-item flex-between clickable" style="text-decoration:none; color:inherit;">
+          <div class="flex-center" style="gap:12px;"><i class="ph ph-github-logo" style="font-size:20px; color:var(--sub);"></i><span>GitHub 저장소 방문</span></div><i class="ph ph-caret-right" style="color:var(--muted);"></i>
+        </a>
         <div class="sheet-item flex-between"><div class="flex-center" style="gap:12px;"><i class="ph ph-translate" style="font-size:20px; color:var(--sub);"></i><span>언어 (Language)</span></div><i class="ph ph-caret-right" style="color:var(--muted);"></i></div>
-        <div class="sheet-item flex-between"><div class="flex-center" style="gap:12px;"><i class="ph ph-info" style="font-size:20px; color:var(--sub);"></i><span>버전 (v3.1.0-deployed)</span></div></div>
+        <div class="sheet-item flex-between"><div class="flex-center" style="gap:12px;"><i class="ph ph-info" style="font-size:20px; color:var(--sub);"></i><span>버전 (v1.0.0-docs)</span></div></div>
       </div>
     </div>
   </div>
@@ -997,7 +994,7 @@ Mathit!</div>
     </div>
   </aside>
 
-  <!-- [배포본 스크립트 완전 복구: 설정, 검색, AI, 점세개, 복사 100% 동작] -->
+  <!-- [배포본 스크립트: 설정, 검색, AI, 점세개, 복사, 슬라이더 100% 동작] -->
   <script src="https://cdn.jsdelivr.net/gh/niteoowl/mathit-ren/mathit-ren-4.js"></script>
   <script>
     function openModal(id) {
@@ -1086,6 +1083,68 @@ Mathit!</div>
         else bar.classList.remove('visible');
       }
     });
+
+    // 고무줄 슬라이더 초기화
+    class RubberSlider {
+      constructor(vp) {
+        this.vp = vp;
+        this.track = vp.firstElementChild;
+        this.cards = [...this.track.children];
+        this.x = 0; this.v = 0;
+        this.bindEvents();
+      }
+      getLimits() { return { min: Math.min(0, -(this.track.scrollWidth - this.vp.clientWidth + 16)), max: 0 }; }
+      setX(x, transition = '') {
+        this.track.style.transition = transition;
+        this.track.style.transform = 'translate3d(' + x + 'px,0,0)';
+      }
+      bindEvents() {
+        let sx, lx, lt, isDrag, locked, isH, moved;
+        this.vp.onpointerdown = (e) => {
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          isDrag = true; locked = isH = moved = false;
+          sx = lx = e.clientX; lt = performance.now(); this.v = 0;
+          const match = this.track.style.transform.match(/translate3d(([-d.]+)px/);
+          this.x = match ? parseFloat(match[1]) : 0;
+          this.setX(this.x);
+          this.vp.setPointerCapture(e.pointerId);
+        };
+        this.vp.onpointermove = (e) => {
+          if (!isDrag) return;
+          const dx = e.clientX - sx;
+          if (Math.abs(dx) > 4) moved = true;
+          const now = performance.now(), dt = now - lt;
+          if (dt > 0) { this.v = (e.clientX - lx) / dt; lx = e.clientX; lt = now; }
+          const { min, max } = this.getLimits();
+          let tx = this.x + dx;
+          if (tx > max) tx = max + (tx - max) * 0.35;
+          else if (tx < min) tx = min + (tx - min) * 0.35;
+          this.setX(tx);
+        };
+        const onEnd = (e) => {
+          if (!isDrag) return;
+          isDrag = false;
+          try { this.vp.releasePointerCapture(e.pointerId); } catch (_) {}
+          const match = this.track.style.transform.match(/translate3d(([-d.]+)px/);
+          const cx = match ? parseFloat(match[1]) : this.x;
+          const { min, max } = this.getLimits();
+          if (cx > max || cx < min) {
+            this.x = cx > max ? max : min;
+            this.setX(this.x, 'transform 0.48s cubic-bezier(0.16,1,0.3,1)');
+            return;
+          }
+          const target = cx + this.v * 120;
+          const offsets = this.cards.map(c => -c.offsetLeft + 16);
+          this.x = offsets.reduce((prev, curr) => {
+            const clamped = Math.max(min, Math.min(max, curr));
+            return Math.abs(clamped - target) < Math.abs(prev - target) ? clamped : prev;
+          }, offsets[0]);
+          this.setX(this.x, 'transform 0.42s cubic-bezier(0.22,1,0.36,1)');
+        };
+        this.vp.onpointerup = this.vp.onpointercancel = onEnd;
+      }
+    }
+    document.querySelectorAll('.rubber-viewport').forEach(vp => new RubberSlider(vp));
 
     if (window.MathitRen && typeof window.MathitRen.highlightAll === 'function') {
       window.MathitRen.highlightAll();

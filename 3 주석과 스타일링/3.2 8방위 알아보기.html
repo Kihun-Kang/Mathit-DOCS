@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8방위 알아보기 - 주석과 스타일링 | Mathit Docs</title>
+  <title>8방위 알아보기 - 주석과 스타일링 | Mathit</title>
   <meta name="description" content="Mathit 수식 엔진 및 GitHub 연동 표준 기술 문서 플랫폼입니다.">
   <meta name="keywords" content="Mathit, 기술문서, Markdown, KaTeX, mathit-ren, SSG">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -31,10 +31,11 @@
   }
   </script>
 
-  <!-- 라이브러리 로드 -->
+  <!-- 라이브러리 로드 (KaTeX JS 엔진 추가로 수식 렌더링 정상화) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer="" src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <style>
@@ -155,7 +156,7 @@
     .ai-textarea::placeholder { color: var(--muted); }
     .ai-send-btn { background: var(--send-btn); color: #fff; padding: 8px 14px; border-radius: 4px; font-size: 13px; gap: 6px; }
 
-    /* 모달 시스템 (display 기반 안전 제어) */
+    /* 모달 시스템 */
     .modal-overlay {
       position: fixed; inset: 0; background: var(--overlay); z-index: 9990;
       display: none; justify-content: center; align-items: flex-end;
@@ -181,8 +182,10 @@
     .toc-item a:hover { background: var(--divider); }
     .toc-item a.active { color: var(--primary); font-weight: 600 !important; background: var(--nav-active); }
 
-    /* 타이포그래피 */
+    /* 타이포그래피 및 뷰 토글 (JS 인라인 스타일 대신 클래스 제어로 미디어 쿼리 완벽 호환) */
+    #home-view.hidden { display: none !important; }
     #doc-page-view { display: none; }
+    #doc-page-view.active { display: block; }
     .doc-article-wrap { width: 100%; max-width: 800px; padding: 0 16px; margin: 0 auto; }
     .doc-toc-sidebar { display: none; }
 
@@ -240,7 +243,7 @@
       padding: 40px 16px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6;
     }
 
-    /* 관리자 플로팅 액션 버튼 (미리보기 화면과 관리 기능의 완전한 분리) */
+    /* 관리자 플로팅 액션 버튼 */
     .admin-fab {
       position: fixed; bottom: 20px; right: 20px; z-index: 8000;
       background: var(--text); color: var(--bg);
@@ -249,7 +252,7 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.25);
     }
 
-    /* PC 데스크톱 화면 (1024px 이상): 중앙 팝업 다이얼로그 */
+    /* PC 데스크톱 화면 (1024px 이상) */
     @media (min-width: 1024px) {
       header { border-bottom-color: var(--border); padding: 0 32px; }
       #open-doc { display: none !important; }
@@ -286,8 +289,8 @@
         padding: 24px 0 60px 40px;
       }
 
-      #doc-page-view {
-        display: none;
+      #doc-page-view.active {
+        display: flex;
         flex-direction: row;
         gap: 36px;
       }
@@ -382,7 +385,7 @@
 .mr-light-env .mr-direction   { color: #0086b3 !important; font-weight: 600; }
 .mr-light-env .mr-punctuation { color: #8c959f !important; }
 </style></head>
-<body class="" style="overflow: hidden;">
+<body class="dark-mode" style="overflow: hidden;">
 
   <!-- 상단 헤더 -->
   <header class="flex-between">
@@ -392,9 +395,8 @@
     </div>
     <div class="flex-center" style="gap: 14px;">
       <i class="ph ph-magnifying-glass nav-icon" id="open-search" title="검색"></i>
-      <i class="ph ph-moon nav-icon" id="btn-theme" title="다크모드"></i>
+      <i class="ph ph-sun nav-icon" id="btn-theme" title="다크모드"></i>
       <i class="ph ph-gear nav-icon" id="open-settings" title="설정"></i>
-      <!-- 본문 진입 시 노출되는 AI 별 아이콘 & 점 세 개 더보기 아이콘 -->
       <i class="ph-fill ph-sparkle nav-icon" id="open-doc-ai" title="AI 메뉴" style="display: flex;"></i>
       <i class="ph ph-dots-three-vertical nav-icon" id="open-doc-more" title="문서 옵션" style="display: flex;"></i>
     </div>
@@ -402,7 +404,7 @@
 
   <!-- 모바일 서브 바 -->
   <div class="mobile-toc-bar" id="mobile-toc-bar">
-    <span style="font-size: 13px; color: var(--text);" class="semi-bold" id="mobile-toc-current">왜 오픈소스가 아닌가?</span>
+    <span style="font-size: 13px; color: var(--text);" class="semi-bold" id="mobile-toc-current">수형도의 기본 구조</span>
     <div class="flex-center clickable" id="open-mobile-toc-btn" style="gap: 4px; font-size: 12px; color: var(--sub); background: var(--divider); padding: 4px 8px; border-radius: 4px;">
       <i class="ph ph-list-dashes"></i>
       <span>소목차</span>
@@ -432,7 +434,7 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link active" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
+                  <a href="#" class="clickable doc-sidebar-link" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                 </li>
               
             </ul>
@@ -497,7 +499,7 @@
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
+                  <a href="#" class="clickable doc-sidebar-link active" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
                 </li>
               
                 <li class="toc-item">
@@ -604,15 +606,14 @@
     <!-- 메인 콘텐츠 영역 -->
     <div class="app-content">
       
-      <!-- 1. 메인 기본 홈 뷰 (원래의 순수 디자인 100% 복원) -->
-      <main id="home-view" style="display: none;">
+      <!-- 1. 메인 기본 홈 뷰 -->
+      <main id="home-view" class="hidden" style="display: none;">
         <section class="hero-banner flex-center">
           <div class="hero-text mono">Welcome to
 Mathit!</div>
           <div class="hero-bg-m katex-font">M</div>
         </section>
 
-        <!-- 원래의 순수 액션 카드 디자인 -->
         <nav class="action-grid">
           <div class="action-card flex-between clickable" style="background:#ff9e42;">
             <span class="action-title">개발자 인터뷰</span>
@@ -643,7 +644,7 @@ Mathit!</div>
         <section>
           <div class="section-title">창의적으로 생각해요</div>
           <div class="rubber-viewport">
-            <div class="rubber-track">
+            <div class="rubber-track" style="transform: translate3d(0px, 0px, 0px); transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);">
               <div class="card gray-card clickable" style="background:var(--g1); color:var(--g1-t);"><div class="card-title">기하학적 사고</div><i class="ph ph-caret-right" style="align-self:flex-end;"></i></div>
               <div class="card gray-card clickable" style="background:var(--g2); color:var(--g2-t);"><div class="card-title">알고리즘 퍼즐</div><i class="ph ph-caret-right" style="align-self:flex-end;"></i></div>
               <div class="card gray-card clickable" style="background:var(--g3); color:var(--g3-t);"><div class="card-title">수학적 모델링</div><i class="ph ph-caret-right" style="align-self:flex-end;"></i></div>
@@ -653,7 +654,6 @@ Mathit!</div>
           </div>
         </section>
 
-        <!-- 커뮤니티 (블러 처리 & 오픈되지 않았어요 안내) -->
         <section>
           <div class="section-title">모르겠으면 모두와 함께</div>
           <div class="community-box">
@@ -686,24 +686,23 @@ Mathit!</div>
         </section>
       </main>
 
-      <!-- 2. 실제 마크다운 렌더링 문서 뷰어 (관리자 버튼 없는 순수 독자 뷰) -->
-      <div id="doc-page-view" style="display: flex;">
+      <!-- 2. 실제 마크다운 렌더링 문서 뷰어 -->
+      <div id="doc-page-view" class="active">
         <article class="doc-article-wrap">
           <nav class="breadcrumb">
             <a href="#" class="to-home-link">문서 홈</a>
             <i class="ph ph-caret-right" style="font-size:10px;"></i>
-            <span id="doc-breadcrumb-group">들어가기 전에</span>
+            <span id="doc-breadcrumb-group">주석과 스타일링</span>
             <i class="ph ph-caret-right" style="font-size:10px;"></i>
-            <span style="color:var(--text);" id="doc-breadcrumb-title">개발자의 한마디</span>
+            <span style="color:var(--text);" id="doc-breadcrumb-title">8방위 알아보기</span>
           </nav>
 
-          <h1 class="doc-h1" id="doc-main-heading">개발자의 한마디</h1>
-          <p class="doc-lead" id="doc-lead-text">들어가기 전에 / 개발자의 한마디</p>
+          <h1 class="doc-h1" id="doc-main-heading">8방위 알아보기</h1>
+          <p class="doc-lead" id="doc-lead-text">주석과 스타일링 / 8방위 알아보기</p>
 
-          <!-- 실제 마크다운 파싱 본문 영역 -->
           <div id="doc-parsed-content"><p class="doc-p" style="font-size:18px; font-weight:600; color:var(--text);">3.2 8방위 알아보기</p><p class="doc-p">기하 도판에서 가장 까다로운 작업은 점이나 선 위에 글자가 겹치지 않도록 글자의 배치 위치를 조절하는 일입니다. Mathit은 나침반의 8개 방위각을 기준점으로 삼는 8방위 앵커 시스템을 도입하여 텍스트를 배치합니다.</p><h2 class="doc-h2" id="sec-1">8방위 앵커의 구조</h2><p class="doc-p">점이 찍힌 위치를 기준으로 라벨이 놓일 방향을 아래의 예약어로 지시합니다.</p>
         <figure class="doc-image-wrap">
-          <img src="https://raw.githubusercontent.com/Kihun-Kang/mathit-document/main/images/3-2-1.png" alt="8방위 이미지" loading="lazy" class="doc-img" onerror="this.onerror=null; this.parentElement.innerHTML='&lt;div class=\'quarantined-img-box\'&gt;&lt;i class=\'ph ph-image-broken\'&gt;&lt;/i&gt;&lt;span&gt;이미지를 찾을 수 없습니다: /images/3-2-1.png&lt;/span&gt;&lt;/div&gt;';">
+          <img src="https://raw.githubusercontent.com/Kihun-Kang/mathit-document/main/images/3-2-1.png" alt="8방위 이미지" loading="lazy" class="doc-img" onerror="window.handleImageError(this, 'images/3-2-1.png')">
           <figcaption class="doc-img-caption">8방위 이미지</figcaption>
         </figure>
       <p class="doc-p">정중앙을 뜻하는 <code>c</code>를 포함하여 총 9개의 위치 기준이 있습니다. 예를 들어 <code>ne</code>를 지정하면 글자의 좌측 하단 모서리가 기준점의 오른쪽 위로 오도록 밀어내어, 점의 중심과 텍스트가 겹치지 않도록 안전 여백을 둡니다.</p><h2 class="doc-h2" id="sec-2">라벨을 배치하는 세 가지 방식</h2><p class="doc-p">문맥에 따라 세 가지 문법 중 가장 편리한 방식을 선택합니다.</p><p class="doc-p">첫째, 점 정의와 동시에 라벨을 부여하는 인라인 방식입니다. 가장 많이 쓰입니다.</p>
@@ -711,31 +710,31 @@ Mathit!</div>
                 <div class="code-box-copy clickable">
                   <i class="ph ph-copy"></i><span>복사</span>
                 </div>
-                <pre><code class="language-mathit mr-light-env"><span class="mr-directive">dot</span><span class="mr-punctuation">:</span> <span class="mr-geom">P</span><span class="mr-string">"P"</span><span class="mr-direction">(nw)</span><span class="mr-punctuation">,</span> <span class="mr-geom">Q</span><span class="mr-string">"Q_1"</span><span class="mr-direction">(se)</span></code></pre>
+                <pre><code class="language-mathit"><span class="mr-directive">dot</span><span class="mr-punctuation">:</span> <span class="mr-geom">P</span><span class="mr-string">"P"</span><span class="mr-direction">(nw)</span><span class="mr-punctuation">,</span> <span class="mr-geom">Q</span><span class="mr-string">"Q_1"</span><span class="mr-direction">(se)</span></code></pre>
               </div>
             <p class="doc-p">점 P 위치에 검은 점을 찍고, 북서쪽에 문자 P를 표시합니다.</p><p class="doc-p">둘째, 독립 라벨 지시어를 사용하는 방식입니다. 도형의 특정 점이 아니라 임의의 좌표에 주석을 달 때 유용합니다.</p>
               <div class="code-box">
                 <div class="code-box-copy clickable">
                   <i class="ph ph-copy"></i><span>복사</span>
                 </div>
-                <pre><code class="language-mathit mr-light-env"><span class="mr-directive">label</span><span class="mr-punctuation">:</span> <span class="mr-punctuation">(</span><span class="mr-number">2.5</span><span class="mr-punctuation">,</span> <span class="mr-number">4</span><span class="mr-punctuation">)</span><span class="mr-string">"최댓값"</span><span class="mr-direction">(n)</span></code></pre>
+                <pre><code class="language-mathit"><span class="mr-directive">label</span><span class="mr-punctuation">:</span> <span class="mr-punctuation">(</span><span class="mr-number">2.5</span><span class="mr-punctuation">,</span> <span class="mr-number">4</span><span class="mr-punctuation">)</span><span class="mr-string">"최댓값"</span><span class="mr-direction">(n)</span></code></pre>
               </div>
             <p class="doc-p">셋째, 곡선이나 함수를 그리면서 옵션 내부에서 직접 지정하는 방식입니다.</p>
               <div class="code-box">
                 <div class="code-box-copy clickable">
                   <i class="ph ph-copy"></i><span>복사</span>
                 </div>
-                <pre><code class="language-mathit mr-light-env"><span class="mr-directive">draw</span><span class="mr-punctuation">:</span> f<span class="mr-punctuation">,</span> <span class="mr-param">label</span><span class="mr-operator">=</span><span class="mr-string mr-latex">"$y=f(x)$"</span><span class="mr-direction">(ne)</span></code></pre>
+                <pre><code class="language-mathit"><span class="mr-directive">draw</span><span class="mr-punctuation">:</span> f<span class="mr-punctuation">,</span> <span class="mr-param">label</span><span class="mr-operator">=</span><span class="mr-string mr-latex">"$y=f(x)$"</span><span class="mr-direction">(ne)</span></code></pre>
               </div>
             <p class="doc-p">이 경우 함수의 오른쪽 끝점 부근에 접선의 기울기를 고려하여 자동으로 북동쪽 여백에 식 이름표가 배치됩니다.</p><h2 class="doc-h2" id="sec-3">수식 LaTeX 렌더링 규칙</h2><p class="doc-p">모든 라벨 문자열 안에서 큰따옴표 내부에 달러 기호(<code>$</code>)를 넣으면 교재용 수식 모드로 작동합니다.</p>
               <div class="code-box">
                 <div class="code-box-copy clickable">
                   <i class="ph ph-copy"></i><span>복사</span>
                 </div>
-                <pre><code class="language-mathit mr-light-env"><span class="mr-directive">dot</span><span class="mr-punctuation">:</span> <span class="mr-geom">A</span><span class="mr-string mr-latex">"$\alpha$"</span><span class="mr-direction">(sw)</span><span class="mr-punctuation">,</span> <span class="mr-geom">B</span><span class="mr-string mr-latex">"$A_k$"</span><span class="mr-direction">(se)</span>
+                <pre><code class="language-mathit"><span class="mr-directive">dot</span><span class="mr-punctuation">:</span> <span class="mr-geom">A</span><span class="mr-string mr-latex">"$\alpha$"</span><span class="mr-direction">(sw)</span><span class="mr-punctuation">,</span> <span class="mr-geom">B</span><span class="mr-string mr-latex">"$A_k$"</span><span class="mr-direction">(se)</span>
 <span class="mr-directive">label</span><span class="mr-punctuation">:</span> <span class="mr-punctuation">(</span><span class="mr-number">0</span><span class="mr-punctuation">,</span> <span class="mr-number">3</span><span class="mr-punctuation">)</span><span class="mr-string mr-latex">"$S = \int_0^1 f(x)dx$"</span><span class="mr-direction">(e)</span></code></pre>
               </div>
-            <p class="doc-p">그리스 문자, 윗첨자, 아랫첨자, 분수(<code>\frac{}{}</code>), 적분 기호 등을 완전하게 렌더링합니다. 한글과 수식을 혼용할 때는 <code>label: (1, 2)"점 $P$의 자취"(n)</code>와 같이 큰따옴표 안에서 자연스럽게 섞어 쓸 수 있습니다.</p></div>
+            <p class="doc-p">그리스 문자, 윗첨자, 아랫첨자, 분수(<code>\frac{}{}</code>), 적분 기호 등을 완전하게 렌더링합니다. 한글과 수식을 혼용할 때는 <code>label: (1, 2)"점 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span>의 자취"(n)</code>와 같이 큰따옴표 안에서 자연스럽게 섞어 쓸 수 있습니다.</p></div>
 
           <div class="feedback-box">
             <span style="font-size:14px; color:var(--sub);">이 문서가 도움이 되었나요?</span>
@@ -746,39 +745,33 @@ Mathit!</div>
           </div>
 
           <div class="doc-pagination">
-            <div class="page-nav-card clickable" id="nav-prev-doc" style="visibility: visible;"><span style="font-size:11px; color:var(--sub);">← 이전 문서</span><span class="semi-bold" id="prev-doc-label" style="font-size:14px;">README</span></div>
-            <div class="page-nav-card clickable" id="nav-next-doc" style="text-align: right; visibility: visible;"><span style="font-size:11px; color:var(--sub);">다음 문서 →</span><span class="semi-bold" id="next-doc-label" style="font-size:14px;">식별자 규칙</span></div>
+            <div class="page-nav-card clickable" id="nav-prev-doc" style="visibility: visible;"><span style="font-size:11px; color:var(--sub);">← 이전 문서</span><span class="semi-bold" id="prev-doc-label" style="font-size:14px;">좌표축과 모눈종이 셋팅</span></div>
+            <div class="page-nav-card clickable" id="nav-next-doc" style="text-align: right; visibility: visible;"><span style="font-size:11px; color:var(--sub);">다음 문서 →</span><span class="semi-bold" id="next-doc-label" style="font-size:14px;">기호 지시어</span></div>
           </div>
 
           <div class="doc-meta-footer">
             <span>최종 빌드: <time datetime="2026-09-25">2026.09.25</time></span>
-            <a href="https://github.com/Kihun-Kang/mathit-document/blob/main/0 들어가기 전에/개발자의 한마디.md" target="_blank" rel="noopener noreferrer" style="color: var(--muted); text-decoration: underline; display: inline;" id="btn-github-external-link">GitHub 원본 파일 열기</a>
+            <a href="https://github.com/Kihun-Kang/mathit-document/blob/main/3 주석과 스타일링/3.2 8방위 알아보기.md" target="_blank" rel="noopener noreferrer" style="color: var(--muted); text-decoration: underline; display: inline;" id="btn-github-external-link">GitHub 원본 파일 열기</a>
           </div>
         </article>
 
-        <!-- PC 우측 고정 TOC -->
         <aside class="doc-toc-sidebar">
           <ul id="pc-toc-list">
-        <li><a href="#sec-1" class="toc-link active">8방위 앵커의 구조</a></li>
-      
-        <li><a href="#sec-2" class="toc-link ">라벨을 배치하는 세 가지 방식</a></li>
-      
-        <li><a href="#sec-3" class="toc-link ">수식 LaTeX 렌더링 규칙</a></li>
-      </ul>
+              <li><a href="#sec-1" class="toc-link active">8방위 앵커의 구조</a></li>
+            
+              <li><a href="#sec-2" class="toc-link ">라벨을 배치하는 세 가지 방식</a></li>
+            
+              <li><a href="#sec-3" class="toc-link ">수식 LaTeX 렌더링 규칙</a></li>
+            </ul>
         </aside>
       </div>
 
     </div>
   </div>
 
-  <!-- [관리자 기능 완전 분리] 우측 하단 플로팅 관리 콘솔 버튼 -->
   
 
-  <!-- ============================================================
-       모달 & 다이얼로그 (완전 통합 구조)
-       ============================================================ -->
-
-  <!-- [관리자 전용 콘솔 모달] 불러오기 & 배포를 한곳에서 처리 -->
+  <!-- 관리자 모달 -->
   
 
   <!-- 설정 모달 -->
@@ -808,21 +801,21 @@ Mathit!</div>
         <i class="ph ph-x modal-close-btn clickable" style="font-size:20px; color:var(--sub);"></i>
       </div>
       <div id="mobile-toc-items-container">
-        <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-1')">
-          <span>8방위 앵커의 구조</span>
-          <i class="ph ph-caret-right" style="color:var(--muted);"></i>
-        </div>
-      
-        <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-2')">
-          <span>라벨을 배치하는 세 가지 방식</span>
-          <i class="ph ph-caret-right" style="color:var(--muted);"></i>
-        </div>
-      
-        <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-3')">
-          <span>수식 LaTeX 렌더링 규칙</span>
-          <i class="ph ph-caret-right" style="color:var(--muted);"></i>
-        </div>
-      </div>
+              <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-1')">
+                <span>8방위 앵커의 구조</span>
+                <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+              </div>
+            
+              <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-2')">
+                <span>라벨을 배치하는 세 가지 방식</span>
+                <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+              </div>
+            
+              <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-3')">
+                <span>수식 LaTeX 렌더링 규칙</span>
+                <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+              </div>
+            </div>
     </div>
   </div>
 
@@ -851,7 +844,7 @@ Mathit!</div>
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link active" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
+                  <a href="#" class="clickable doc-sidebar-link" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                 </li>
               
             </ul>
@@ -916,7 +909,7 @@ Mathit!</div>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
+                  <a href="#" class="clickable doc-sidebar-link active" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
                 </li>
               
                 <li class="toc-item">
@@ -1058,7 +1051,7 @@ Mathit!</div>
     </div>
   </div>
 
-  <!-- 문서 옵션 모달 (점 세 개) -->
+  <!-- 문서 옵션 모달 -->
   <div class="modal-overlay" id="more-modal">
     <div class="bottom-sheet">
       <div class="sheet-handle"></div>
@@ -1080,17 +1073,16 @@ Mathit!</div>
     </div>
   </div>
 
-  <!-- TeX M 로딩 모달 -->
-  <div class="modal-overlay flex-center active" id="loader-modal" style="justify-content:center; z-index:10005;">
+  <!-- TeX M 로딩 모달 (배경 클릭 탈출 가능) -->
+  <div class="modal-overlay flex-center clickable active" id="loader-modal" style="justify-content:center; z-index:10005;">
     <div class="tex-loader">M</div>
   </div>
 
-  <!-- mathit-ren-4.js 최신 렌더러 로드 -->
   <script src="https://cdn.jsdelivr.net/gh/niteoowl/mathit-ren/mathit-ren-4.js"></script>
 
   <script>
     // ============================================================
-    // 1. 애플리케이션 상태 (기본 홈 대기)
+    // 1. 애플리케이션 상태 & 표준 유틸리티
     // ============================================================
     const appState = {
       source: { repo: '', branch: 'main', token: '' },
@@ -1118,8 +1110,8 @@ Mathit!</div>
       if (aKeys && bKeys) {
         const len = Math.max(aKeys.length, bKeys.length);
         for (let i = 0; i < len; i++) {
-          const aVal = aKeys[i] !== undefined ? aKeys[i] : 0;
-          const bVal = bKeys[i] !== undefined ? bKeys[i] : 0;
+          const aVal = aKeys[i] !== undefined ? aKeys[i] : -Infinity;
+          const bVal = bKeys[i] !== undefined ? bKeys[i] : -Infinity;
           if (aVal !== bVal) return aVal - bVal;
         }
       } else if (aKeys) {
@@ -1139,15 +1131,41 @@ Mathit!</div>
       return noExt.replace(/^\d+(?:\.\d+)*[\s.\-_]+/, '').trim() || noExt;
     }
 
-    function decodeBase64Utf8(str) {
-      return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
+    // 최신 표준 TextEncoder/TextDecoder 기반의 안전한 Base64 변환
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = '';
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    function base64ToUtf8(str) {
+      const binary = atob((str || '').replace(/\s/g, ''));
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return new TextDecoder('utf-8').decode(bytes);
+    }
+
+    function escapeHtml(text) {
+      return (text || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
     }
 
     // ============================================================
-    // 2. /images 전용 해석 및 외부 격리
+    // 2. /images 전용 격리 및 안전한 이미지 핸들러
     // ============================================================
+    window.handleImageError = function(img, originalPath) {
+      img.onerror = null;
+      const parent = img.parentElement;
+      if (parent) {
+        parent.innerHTML = `<div class="quarantined-img-box"><i class="ph ph-image-broken"></i><span>이미지를 찾을 수 없습니다: /${escapeHtml(originalPath)}</span></div>`;
+      }
+    };
+
     function resolveMarkdownImage(rawSrc, altText) {
       const src = (rawSrc || '').trim();
       const isExternal = /^(https?:|\/\/|data:|ftp:)/i.test(src);
@@ -1169,16 +1187,19 @@ Mathit!</div>
       }
 
       const escapedAlt = escapeHtml(altText || '');
+      const escapedUrl = escapeHtml(finalImgUrl);
+      const safePath = escapeHtml(normalizedPath);
+
       return `
         <figure class="doc-image-wrap">
-          <img src="${escapeHtml(finalImgUrl)}" alt="${escapedAlt}" loading="lazy" class="doc-img" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'quarantined-img-box\\'><i class=\\'ph ph-image-broken\\'></i><span>이미지를 찾을 수 없습니다: /${escapeHtml(normalizedPath)}</span></div>';">
+          <img src="${escapedUrl}" alt="${escapedAlt}" loading="lazy" class="doc-img" onerror="window.handleImageError(this, '${safePath}')">
           ${escapedAlt ? `<figcaption class="doc-img-caption">${escapedAlt}</figcaption>` : ''}
         </figure>
       `;
     }
 
     // ============================================================
-    // 3. GitHub 소스 트리 파싱
+    // 3. GitHub 소스 트리 파싱 (중첩 서브 디렉토리 전체 수용)
     // ============================================================
     async function loadSourceRepo(ownerRepo, branch, token) {
       if (!ownerRepo || !ownerRepo.includes('/')) {
@@ -1196,7 +1217,7 @@ Mathit!</div>
       if (token) headers['Authorization'] = `token ${token}`;
 
       try {
-        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${appState.source.branch}?recursive=1`;
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${encodeURIComponent(appState.source.branch)}?recursive=1`;
         const res = await fetch(apiUrl, { headers });
 
         if (!res.ok) {
@@ -1229,13 +1250,16 @@ Mathit!</div>
           let fileRaw = parts[0];
 
           if (parts.length > 1) {
-            folderRaw = parts[0];
+            folderRaw = parts.slice(0, parts.length - 1).join(' / ');
             fileRaw = parts[parts.length - 1];
           }
 
           if (!categoryMap.has(folderRaw)) {
-            const catSortKey = folderRaw === '개요' ? [-1] : extractSortKey(folderRaw);
-            const catDisplayName = folderRaw === '개요' ? '개요' : cleanCategoryName(folderRaw);
+            const catSortKey = folderRaw === '개요' ? [-1] : extractSortKey(parts[0]);
+            const catDisplayName = folderRaw === '개요' 
+              ? '개요' 
+              : parts.slice(0, parts.length - 1).map(cleanCategoryName).join(' / ');
+
             categoryMap.set(folderRaw, {
               sortKey: catSortKey !== null ? catSortKey : [9999],
               rawName: folderRaw,
@@ -1311,21 +1335,261 @@ Mathit!</div>
         `;
       }
 
-      document.getElementById('sidebar-repo-tree').innerHTML = html;
-      document.getElementById('mobile-repo-tree-container').innerHTML = html;
+      const desktopSidebar = document.getElementById('sidebar-repo-tree');
+      const mobileSidebar = document.getElementById('mobile-repo-tree-container');
+      if (desktopSidebar) desktopSidebar.innerHTML = html;
+      if (mobileSidebar) mobileSidebar.innerHTML = html;
+    }
 
-      document.querySelectorAll('.doc-sidebar-link').forEach(link => {
-        link.onclick = (e) => {
-          e.preventDefault();
-          const path = link.getAttribute('data-path');
-          const targetDoc = appState.docListFlat.find(d => d.path === path);
-          if (targetDoc) selectDocument(targetDoc);
-        };
+    // 사이드바 클릭 이벤트 위임 (중복 리스너 등록 방지 및 메모리 최적화)
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('.doc-sidebar-link');
+      if (!link) return;
+      e.preventDefault();
+      const path = link.getAttribute('data-path');
+      const targetDoc = appState.docListFlat.find(d => d.path === path);
+      if (targetDoc) {
+        selectDocument(targetDoc);
+        closeModal('doc-nav-modal');
+      }
+    });
+
+    // ============================================================
+    // 4. 마크다운 & KaTeX 수식 순수 파싱 엔진
+    // ============================================================
+    function parseInlineMarkdown(text) {
+      const mathTokens = [];
+
+      // 1. 인라인 수식 $...$ 보호 및 KaTeX 렌더링
+      text = text.replace(/\$([^\$\n]+?)\$/g, (_, math) => {
+        let rendered = `$${math}$`;
+        if (typeof katex !== 'undefined') {
+          try {
+            rendered = katex.renderToString(math.trim(), { displayMode: false, throwOnError: false });
+          } catch (_) {
+            rendered = escapeHtml(`$${math}$`);
+          }
+        }
+        const token = `__MATH_TOKEN_${mathTokens.length}__`;
+        mathTokens.push(rendered);
+        return token;
       });
+
+      // 2. HTML 특수문자 이스케이프
+      text = escapeHtml(text);
+
+      // 3. 인라인 코드 및 기본 타이포그래피
+      text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+      text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+      // 4. 수식 토큰 복원
+      mathTokens.forEach((rendered, i) => {
+        text = text.replace(`__MATH_TOKEN_${i}__`, rendered);
+      });
+
+      return text;
+    }
+
+    function parseMarkdownToHtmlAndHeadings(mdText) {
+      if (!mdText || mdText.trim() === '') {
+        return { html: '<div class="empty-state-notice">파일에 내용이 없습니다.</div>', headings: [] };
+      }
+
+      const headings = [];
+      const lines = mdText.split('\n');
+      let html = '';
+      let inCode = false;
+      let codeLang = '';
+      let codeBuffer = [];
+      let inCallout = false;
+      let inBlockMath = false;
+      let mathBuffer = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const rawLine = lines[i];
+        const trimmed = rawLine.trim();
+
+        // 1. 코드 블록 처리
+        if (trimmed.startsWith('```')) {
+          if (inCallout) { html += '</div></div>'; inCallout = false; }
+          if (inBlockMath) { inBlockMath = false; mathBuffer = []; }
+
+          if (!inCode) {
+            inCode = true;
+            codeLang = trimmed.replace(/^```/, '').trim() || 'mathit';
+            codeBuffer = [];
+          } else {
+            inCode = false;
+            const rawCode = codeBuffer.join('\n');
+            let highlighted = '';
+
+            if ((codeLang === 'mathit' || !codeLang) && window.MathitRen && typeof window.MathitRen.highlight === 'function') {
+              try {
+                highlighted = window.MathitRen.highlight(rawCode);
+              } catch (_) {
+                highlighted = escapeHtml(rawCode);
+              }
+            } else {
+              highlighted = escapeHtml(rawCode);
+            }
+
+            html += `
+              <div class="code-box">
+                <div class="code-box-copy clickable">
+                  <i class="ph ph-copy"></i><span>복사</span>
+                </div>
+                <pre><code class="language-${escapeHtml(codeLang)}">${highlighted}</code></pre>
+              </div>
+            `;
+          }
+          continue;
+        }
+
+        if (inCode) {
+          codeBuffer.push(rawLine);
+          continue;
+        }
+
+        // 2. 디스플레이 블록 수식 $$ ... $$ 처리
+        if (trimmed.startsWith('$$')) {
+          if (inCallout) { html += '</div></div>'; inCallout = false; }
+          if (!inBlockMath) {
+            const rest = trimmed.replace(/^\$\$/, '');
+            if (rest.endsWith('$$') && rest.length >= 2) {
+              // 한 줄 형태: $$ 수식 $$
+              const formula = rest.replace(/\$\$$/, '').trim();
+              let rendered = formula;
+              if (typeof katex !== 'undefined') {
+                try { rendered = katex.renderToString(formula, { displayMode: true, throwOnError: false }); } catch (_) { rendered = escapeHtml(formula); }
+              }
+              html += `<div style="margin:20px 0; overflow-x:auto; text-align:center;">${rendered}</div>`;
+            } else {
+              inBlockMath = true;
+              mathBuffer = rest ? [rest] : [];
+            }
+          } else {
+            inBlockMath = false;
+            mathBuffer.push(trimmed.replace(/\$\$$/, ''));
+            const formula = mathBuffer.join('\n').trim();
+            let rendered = formula;
+            if (typeof katex !== 'undefined') {
+              try { rendered = katex.renderToString(formula, { displayMode: true, throwOnError: false }); } catch (_) { rendered = escapeHtml(formula); }
+            }
+            html += `<div style="margin:20px 0; overflow-x:auto; text-align:center;">${rendered}</div>`;
+            mathBuffer = [];
+          }
+          continue;
+        }
+
+        if (inBlockMath) {
+          mathBuffer.push(rawLine);
+          continue;
+        }
+
+        // 3. 콜아웃 블록 시작 (> [!INFO] / > [!NOTE])
+        if (trimmed.startsWith('> [!INFO]') || trimmed.startsWith('> [!NOTE]')) {
+          if (inCallout) html += '</div></div>';
+          inCallout = true;
+          html += `<div class="doc-callout"><i class="ph ph-info"></i><div style="flex:1;">`;
+          continue;
+        }
+
+        // 콜아웃 내부 본문 진행
+        if (inCallout) {
+          if (trimmed.startsWith('>')) {
+            const calloutContent = parseInlineMarkdown(trimmed.replace(/^>\s?/, ''));
+            html += `<p class="doc-p" style="margin-bottom:6px;">${calloutContent}</p>`;
+            continue;
+          } else if (trimmed === '') {
+            const next = lines[i + 1]?.trim();
+            if (!next || !next.startsWith('>')) {
+              html += `</div></div>`;
+              inCallout = false;
+              continue;
+            }
+          } else {
+            html += `</div></div>`;
+            inCallout = false;
+          }
+        }
+
+        // 4. 단독 이미지 라인 (HTML5 명세 준수: <p> 내부에 <figure> 중첩 차단)
+        const singleImageMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+        if (singleImageMatch) {
+          html += resolveMarkdownImage(singleImageMatch[2], singleImageMatch[1]);
+          continue;
+        }
+
+        // 5. 제목(헤더)
+        if (trimmed.startsWith('## ')) {
+          const title = trimmed.replace('## ', '').trim();
+          const id = 'sec-' + (headings.length + 1);
+          headings.push({ id, title });
+          html += `<h2 class="doc-h2" id="${id}">${escapeHtml(title)}</h2>`;
+          continue;
+        }
+        if (trimmed.startsWith('# ')) {
+          html += `<p class="doc-p" style="font-size:18px; font-weight:600; color:var(--text);">${escapeHtml(trimmed.replace('# ', '').trim())}</p>`;
+          continue;
+        }
+
+        // 6. 일반 문단 (줄 내 이미지 지원)
+        if (trimmed !== '') {
+          const hasImg = trimmed.match(/!\[(.*?)\]\((.*?)\)/);
+          if (hasImg) {
+            html += resolveMarkdownImage(hasImg[2], hasImg[1]);
+          } else {
+            const parsedLine = parseInlineMarkdown(trimmed);
+            html += `<p class="doc-p">${parsedLine}</p>`;
+          }
+        }
+      }
+
+      if (inCallout) html += `</div></div>`;
+      if (inCode) html += `</code></pre></div>`;
+
+      return { html, headings };
+    }
+
+    function renderMarkdownContent(mdText) {
+      const { html, headings } = parseMarkdownToHtmlAndHeadings(mdText);
+      document.getElementById('doc-parsed-content').innerHTML = html;
+      buildTOC(headings);
+
+      if (window.MathitRen && typeof window.MathitRen.highlightAll === 'function') {
+        try { window.MathitRen.highlightAll(); } catch (_) {}
+      }
+    }
+
+    function buildTOC(headings) {
+      const pcList = document.getElementById('pc-toc-list');
+      const mobileList = document.getElementById('mobile-toc-items-container');
+
+      if (headings.length === 0) {
+        if (pcList) pcList.innerHTML = '<li style="font-size:12px; color:var(--muted); padding-left:12px;">소목차가 없습니다</li>';
+        if (mobileList) mobileList.innerHTML = '<div class="empty-state-notice">소목차가 없습니다.</div>';
+        return;
+      }
+
+      if (pcList) {
+        pcList.innerHTML = headings.map((h, i) => `
+          <li><a href="#${h.id}" class="toc-link ${i === 0 ? 'active' : ''}">${escapeHtml(h.title)}</a></li>
+        `).join('');
+      }
+
+      if (mobileList) {
+        mobileList.innerHTML = headings.map(h => `
+          <div class="sheet-item flex-between clickable" onclick="jumpToSection('${h.id}')">
+            <span>${escapeHtml(h.title)}</span>
+            <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+          </div>
+        `).join('');
+      }
     }
 
     // ============================================================
-    // 4. 실제 문서 로드 & 파싱
+    // 5. 실제 문서 로드 & 상태 동기화
     // ============================================================
     async function fetchActualFileContent(path) {
       if (appState.currentDoc && appState.currentDoc.path === path && appState.currentDoc.rawContent) {
@@ -1347,7 +1611,7 @@ Mathit!</div>
       if (res.ok) {
         const data = await res.json();
         if (data.content) {
-          return decodeBase64Utf8(data.content.replace(/\s/g, ''));
+          return base64ToUtf8(data.content);
         }
       }
 
@@ -1400,118 +1664,6 @@ Mathit!</div>
       }
     }
 
-    function renderMarkdownContent(mdText) {
-      if (!mdText || mdText.trim() === '') {
-        document.getElementById('doc-parsed-content').innerHTML = '<div class="empty-state-notice">파일에 내용이 없습니다.</div>';
-        buildTOC([]);
-        return;
-      }
-
-      const headings = [];
-      const lines = mdText.split('\n');
-      let html = '';
-      let inCode = false;
-      let codeLang = '';
-      let codeBuffer = [];
-
-      lines.forEach((line) => {
-        const trimmed = line.trim();
-
-        if (trimmed.startsWith('```')) {
-          if (!inCode) {
-            inCode = true;
-            codeLang = trimmed.replace(/^```/, '').trim() || 'mathit';
-            codeBuffer = [];
-          } else {
-            inCode = false;
-            const rawCode = codeBuffer.join('\n');
-            let highlighted = '';
-
-            if ((codeLang === 'mathit' || !codeLang) && window.MathitRen && typeof window.MathitRen.highlight === 'function') {
-              try {
-                highlighted = window.MathitRen.highlight(rawCode);
-              } catch (_) {
-                highlighted = escapeHtml(rawCode);
-              }
-            } else {
-              highlighted = escapeHtml(rawCode);
-            }
-
-            html += `
-              <div class="code-box">
-                <div class="code-box-copy clickable">
-                  <i class="ph ph-copy"></i><span>복사</span>
-                </div>
-                <pre><code class="language-${escapeHtml(codeLang)}">${highlighted}</code></pre>
-              </div>
-            `;
-          }
-          return;
-        }
-
-        if (inCode) {
-          codeBuffer.push(line);
-          return;
-        }
-
-        const singleImageMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
-        if (singleImageMatch) {
-          html += resolveMarkdownImage(singleImageMatch[2], singleImageMatch[1]);
-          return;
-        }
-
-        if (trimmed.startsWith('## ')) {
-          const title = trimmed.replace('## ', '');
-          const id = 'sec-' + (headings.length + 1);
-          headings.push({ id, title });
-          html += `<h2 class="doc-h2" id="${id}">${escapeHtml(title)}</h2>`;
-        } else if (trimmed.startsWith('# ')) {
-          html += `<p class="doc-p" style="font-size:18px; font-weight:600; color:var(--text);">${escapeHtml(trimmed.replace('# ', ''))}</p>`;
-        } else if (trimmed.startsWith('> [!INFO]') || trimmed.startsWith('> [!NOTE]')) {
-          html += `<div class="doc-callout"><i class="ph ph-info"></i><div>`;
-        } else if (trimmed.startsWith('> ')) {
-          html += `<p class="doc-p" style="margin-bottom:4px;">${escapeHtml(trimmed.replace('> ', ''))}</p>`;
-        } else if (trimmed === '' && html.endsWith('<div>')) {
-          html += `</div></div>`;
-        } else if (trimmed !== '') {
-          let parsedLine = escapeHtml(trimmed)
-            .replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, src) => resolveMarkdownImage(src, alt))
-            .replace(/`([^`]+)`/g, '<code>$1</code>');
-          html += `<p class="doc-p">${parsedLine}</p>`;
-        }
-      });
-
-      if (html.includes('doc-callout') && !html.endsWith('</div></div>')) {
-        html += `</div></div>`;
-      }
-
-      document.getElementById('doc-parsed-content').innerHTML = html;
-      buildTOC(headings);
-
-      if (window.MathitRen && typeof window.MathitRen.highlightAll === 'function') {
-        try { window.MathitRen.highlightAll(); } catch (_) {}
-      }
-    }
-
-    function buildTOC(headings) {
-      if (headings.length === 0) {
-        document.getElementById('pc-toc-list').innerHTML = '<li style="font-size:12px; color:var(--muted); padding-left:12px;">소목차가 없습니다</li>';
-        document.getElementById('mobile-toc-items-container').innerHTML = '<div class="empty-state-notice">소목차가 없습니다.</div>';
-        return;
-      }
-
-      document.getElementById('pc-toc-list').innerHTML = headings.map((h, i) => `
-        <li><a href="#${h.id}" class="toc-link ${i === 0 ? 'active' : ''}">${escapeHtml(h.title)}</a></li>
-      `).join('');
-
-      document.getElementById('mobile-toc-items-container').innerHTML = headings.map(h => `
-        <div class="sheet-item flex-between clickable" onclick="jumpToSection('${h.id}')">
-          <span>${escapeHtml(h.title)}</span>
-          <i class="ph ph-caret-right" style="color:var(--muted);"></i>
-        </div>
-      `).join('');
-    }
-
     function updatePagination(currentDoc) {
       const idx = appState.docListFlat.findIndex(d => d.path === currentDoc.path);
       const prev = appState.docListFlat[idx - 1];
@@ -1526,6 +1678,7 @@ Mathit!</div>
         prevCard.onclick = () => selectDocument(prev);
       } else {
         prevCard.style.visibility = 'hidden';
+        prevCard.onclick = null;
       }
 
       if (next) {
@@ -1534,50 +1687,110 @@ Mathit!</div>
         nextCard.onclick = () => selectDocument(next);
       } else {
         nextCard.style.visibility = 'hidden';
+        nextCard.onclick = null;
       }
     }
 
     // ============================================================
-    // 5. 완벽한 클론 배포 엔진 (현재 페이지의 완벽한 쉘을 그대로 복제)
+    // 6. 단일 커밋 원자적 다중 페이지 정적 빌드 배포 엔진
     // ============================================================
-    function generatePageFromExactDOM(doc, isHome, targetRepo) {
-      // 현재 완성된 DOM 구조 전체를 안전하게 복제하여 인라인 배포본 생성
-      const clonedDoc = document.documentElement.cloneNode(true);
+    function generatePageForDoc(doc, isHome, targetRepo, allDocs) {
+      const cloned = document.documentElement.cloneNode(true);
 
-      // 배포본에서는 관리자 FAB 제거
-      const fab = clonedDoc.querySelector('.admin-fab');
+      // 관리자 전용 UI 완전 제거
+      const fab = cloned.querySelector('.admin-fab');
       if (fab) fab.remove();
-      const adminModal = clonedDoc.querySelector('#admin-modal');
+      const adminModal = cloned.querySelector('#admin-modal');
       if (adminModal) adminModal.remove();
 
-      // 메타데이터 및 타이틀 설정
-      const pageTitle = isHome ? "Mathit Docs" : `${doc.title} - ${doc.category} | Mathit Docs`;
-      clonedDoc.querySelector('title').textContent = pageTitle;
+      // 메타데이터 설정
+      const pageTitle = isHome ? "Mathit - 기술 문서 플랫폼" : `${doc.title} - ${doc.category} | Mathit`;
+      cloned.querySelector('title').textContent = pageTitle;
 
-      const canonical = clonedDoc.querySelector('link[rel="canonical"]');
+      const canonical = cloned.querySelector('link[rel="canonical"]');
       if (canonical) {
         canonical.setAttribute('href', isHome ? `https://${targetRepo}/index.html` : `https://${targetRepo}/${doc.htmlPath}`);
       }
 
-      // 화면 표시 토글
-      const homeEl = clonedDoc.querySelector('#home-view');
-      const docEl = clonedDoc.querySelector('#doc-page-view');
-      const aiBtn = clonedDoc.querySelector('#open-doc-ai');
-      const moreBtn = clonedDoc.querySelector('#open-doc-more');
+      const homeEl = cloned.querySelector('#home-view');
+      const docEl = cloned.querySelector('#doc-page-view');
+      const aiBtn = cloned.querySelector('#open-doc-ai');
+      const moreBtn = cloned.querySelector('#open-doc-more');
 
       if (isHome) {
-        if (homeEl) homeEl.style.display = 'block';
-        if (docEl) docEl.style.display = 'none';
+        if (homeEl) { homeEl.style.display = 'block'; homeEl.classList.remove('hidden'); }
+        if (docEl) { docEl.style.display = 'none'; docEl.classList.remove('active'); }
         if (aiBtn) aiBtn.style.display = 'none';
         if (moreBtn) moreBtn.style.display = 'none';
       } else {
-        if (homeEl) homeEl.style.display = 'none';
-        if (docEl) docEl.style.display = 'flex';
+        if (homeEl) { homeEl.style.display = 'none'; homeEl.classList.add('hidden'); }
+        if (docEl) { docEl.style.display = ''; docEl.classList.add('active'); }
         if (aiBtn) aiBtn.style.display = 'flex';
         if (moreBtn) moreBtn.style.display = 'flex';
+
+        // 독립 정적 페이지용 헤딩, 브레드크럼, 본문 및 목차 실시간 합성
+        cloned.querySelector('#doc-breadcrumb-group').textContent = doc.category;
+        cloned.querySelector('#doc-breadcrumb-title').textContent = doc.title;
+        cloned.querySelector('#doc-main-heading').textContent = doc.title;
+        cloned.querySelector('#doc-lead-text').textContent = `${doc.category} / ${doc.title}`;
+
+        const parsed = parseMarkdownToHtmlAndHeadings(doc.rawContent || '');
+        cloned.querySelector('#doc-parsed-content').innerHTML = parsed.html;
+
+        const pcToc = cloned.querySelector('#pc-toc-list');
+        const mobToc = cloned.querySelector('#mobile-toc-items-container');
+
+        if (parsed.headings.length === 0) {
+          if (pcToc) pcToc.innerHTML = '<li style="font-size:12px; color:var(--muted); padding-left:12px;">소목차가 없습니다</li>';
+          if (mobToc) mobToc.innerHTML = '<div class="empty-state-notice">소목차가 없습니다.</div>';
+        } else {
+          if (pcToc) {
+            pcToc.innerHTML = parsed.headings.map((h, i) => `
+              <li><a href="#${h.id}" class="toc-link ${i === 0 ? 'active' : ''}">${escapeHtml(h.title)}</a></li>
+            `).join('');
+          }
+          if (mobToc) {
+            mobToc.innerHTML = parsed.headings.map(h => `
+              <div class="sheet-item flex-between clickable" onclick="jumpToSection('${h.id}')">
+                <span>${escapeHtml(h.title)}</span>
+                <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+              </div>
+            `).join('');
+          }
+        }
+
+        const idx = allDocs.findIndex(d => d.path === doc.path);
+        const prev = allDocs[idx - 1];
+        const next = allDocs[idx + 1];
+        const prevCard = cloned.querySelector('#nav-prev-doc');
+        const nextCard = cloned.querySelector('#nav-next-doc');
+
+        if (prev && prevCard) {
+          prevCard.style.visibility = 'visible';
+          prevCard.querySelector('#prev-doc-label').textContent = prev.title;
+        } else if (prevCard) {
+          prevCard.style.visibility = 'hidden';
+        }
+
+        if (next && nextCard) {
+          nextCard.style.visibility = 'visible';
+          nextCard.querySelector('#next-doc-label').textContent = next.title;
+        } else if (nextCard) {
+          nextCard.style.visibility = 'hidden';
+        }
+
+        cloned.querySelectorAll('.doc-sidebar-link').forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-path') === doc.path);
+        });
+
+        const extLink = cloned.querySelector('#btn-github-external-link');
+        if (extLink && appState.source.repo) {
+          extLink.href = `https://github.com/${appState.source.repo}/blob/${appState.source.branch}/${doc.path}`;
+          extLink.style.display = 'inline';
+        }
       }
 
-      return "<!DOCTYPE html>\n" + clonedDoc.outerHTML;
+      return "<!DOCTYPE html>\n" + cloned.outerHTML;
     }
 
     async function deployMultiPageDocsToTarget() {
@@ -1586,98 +1799,138 @@ Mathit!</div>
         return;
       }
 
-      showLoader(true);
       const targetRepo = document.getElementById('gh-target-repo').value.trim();
       const targetBranch = document.getElementById('gh-target-branch').value.trim() || 'gh-pages';
       const token = document.getElementById('gh-target-token').value.trim();
 
       if (!targetRepo || !targetRepo.includes('/')) {
         alert('배포할 타깃 저장소(owner/repo)를 올바르게 입력하세요.');
-        showLoader(false);
         return;
       }
+
+      if (!token) {
+        alert('타깃 저장소 배포를 위해 쓰기 권한이 있는 GitHub Personal Access Token이 필수입니다.');
+        return;
+      }
+
+      showLoader(true);
 
       try {
         const commitFiles = [];
 
-        // 1. 각 개별 문서를 완전한 HTML 파일로 복제 빌드
+        // 1. 모든 개별 문서의 원문 취득 및 완전한 정적 HTML 개별 생성
         for (const doc of appState.docListFlat) {
           let content = doc.rawContent;
-          if (!content) content = await fetchActualFileContent(doc.path);
-          renderMarkdownContent(content);
-          
-          const fullHtml = generatePageFromExactDOM(doc, false, targetRepo);
+          if (!content) {
+            content = await fetchActualFileContent(doc.path);
+            doc.rawContent = content;
+          }
+          const fullHtml = generatePageForDoc(doc, false, targetRepo, appState.docListFlat);
           commitFiles.push({ path: doc.htmlPath, content: fullHtml });
         }
 
-        // 2. 루트 index.html (실제 온전한 홈 화면 100% 복제 탑재)
-        const indexHtml = generatePageFromExactDOM(appState.docListFlat[0], true, targetRepo);
+        // 2. 메인 홈 index.html 및 GitHub Pages 설정 파일
+        const indexHtml = generatePageForDoc(appState.docListFlat[0], true, targetRepo, appState.docListFlat);
         commitFiles.push({ path: 'index.html', content: indexHtml });
         commitFiles.push({ path: '.nojekyll', content: '' });
 
-        // 3. SEO sitemap.xml
-        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${commitFiles.map(f => `  <url><loc>https://${targetRepo}/${f.path}</loc></url>`).join('\n')}
-</urlset>`;
+        // 3. sitemap.xml
+        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${commitFiles.map(f => `  <url><loc>https://${targetRepo}/${f.path}</loc></url>`).join('\n')}\n</urlset>`;
         commitFiles.push({ path: 'sitemap.xml', content: sitemap });
 
-        // 4. AI 검색 메니페스트 llms.txt
-        const llmsTxt = `# ${targetRepo} Documentation
-Generated by Mathit Multi-Page Engine
-
-${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPath}): ${d.category}`).join('\n')}`;
+        // 4. AI 검색 매니페스트 llms.txt
+        const llmsTxt = `# ${targetRepo} Documentation\nGenerated by Mathit Multi-Page Engine\n\n${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPath}): ${d.category}`).join('\n')}`;
         commitFiles.push({ path: 'llms.txt', content: llmsTxt });
 
-        // 5. GitHub API로 타깃 레포에 실제 푸시
-        if (token) {
-          const [owner, repo] = targetRepo.split('/');
-          for (const file of commitFiles) {
-            const encoded = btoa(unescape(encodeURIComponent(file.content)));
-            
-            let sha = null;
-            try {
-              const check = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${file.path}?ref=${targetBranch}`, {
-                headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-              });
-              if (check.ok) {
-                const resJson = await check.json();
-                sha = resJson.sha;
-              }
-            } catch (_) {}
+        // 5. GitHub Git Data API (Tree Commit)로 단 1회의 원자적 커밋 생성
+        const [tOwner, tRepo] = targetRepo.split('/');
+        const ghHeaders = {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        };
 
-            const body = {
-              message: `docs: deploy 100% identical multi-page docs (${file.path})`,
-              content: encoded,
-              branch: targetBranch
-            };
-            if (sha) body.sha = sha;
+        // 최신 커밋 참조 조회
+        let parentCommitSha = null;
+        let baseTreeSha = null;
+        const refRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/ref/heads/${targetBranch}`, { headers: ghHeaders });
 
-            const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${file.path}`, {
-              method: 'PUT',
-              headers: {
-                'Authorization': `token ${token}`,
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.v3+json'
-              },
-              body: JSON.stringify(body)
-            });
-
-            if (!putRes.ok) {
-              const errData = await putRes.json();
-              throw new Error(`[${file.path}] 푸시 실패: ${errData.message || putRes.statusText}`);
-            }
+        if (refRes.ok) {
+          const refData = await refRes.json();
+          parentCommitSha = refData.object.sha;
+          const commitRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/commits/${parentCommitSha}`, { headers: ghHeaders });
+          if (commitRes.ok) {
+            const commitData = await commitRes.json();
+            baseTreeSha = commitData.tree.sha;
           }
-        } else {
-          await new Promise(r => setTimeout(r, 700));
         }
 
-        if (appState.currentDoc) {
-          renderMarkdownContent(appState.currentDoc.rawContent);
+        // Git Tree 생성
+        const treePayload = {
+          tree: commitFiles.map(f => ({
+            path: f.path,
+            mode: '100644',
+            type: 'blob',
+            content: f.content
+          }))
+        };
+        if (baseTreeSha) treePayload.base_tree = baseTreeSha;
+
+        const treeRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/trees`, {
+          method: 'POST',
+          headers: ghHeaders,
+          body: JSON.stringify(treePayload)
+        });
+
+        if (!treeRes.ok) {
+          const err = await treeRes.json();
+          throw new Error(`Tree 생성 실패: ${err.message || treeRes.statusText}`);
+        }
+
+        const newTree = await treeRes.json();
+
+        // Commit 객체 생성
+        const newCommitRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/commits`, {
+          method: 'POST',
+          headers: ghHeaders,
+          body: JSON.stringify({
+            message: `docs: deploy 100% identical multi-page docs via Mathit (${commitFiles.length} files)`,
+            tree: newTree.sha,
+            parents: parentCommitSha ? [parentCommitSha] : []
+          })
+        });
+
+        if (!newCommitRes.ok) {
+          const err = await newCommitRes.json();
+          throw new Error(`Commit 생성 실패: ${err.message || newCommitRes.statusText}`);
+        }
+
+        const newCommit = await newCommitRes.json();
+
+        // Branch Ref 업데이트 (없을 경우 새로 생성)
+        let refUpdateRes;
+        if (parentCommitSha) {
+          refUpdateRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/refs/heads/${targetBranch}`, {
+            method: 'PATCH',
+            headers: ghHeaders,
+            body: JSON.stringify({ sha: newCommit.sha, force: true })
+          });
+        } else {
+          refUpdateRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/refs`, {
+            method: 'POST',
+            headers: ghHeaders,
+            body: JSON.stringify({ ref: `refs/heads/${targetBranch}`, sha: newCommit.sha })
+          });
+        }
+
+        if (!refUpdateRes.ok) {
+          const err = await refUpdateRes.json();
+          throw new Error(`Branch 갱신 실패: ${err.message || refUpdateRes.statusText}`);
         }
 
         closeModal('admin-modal');
-        alert(`완전한 멀티페이지 웹 배포가 완료되었습니다!\n타깃 레포: ${targetRepo}\n브랜치: ${targetBranch}\n생성된 파일 수: ${commitFiles.length}개`);
+        alert(`단일 원자적 커밋으로 다중 페이지 배포가 완료되었습니다!\n타깃 레포: ${targetRepo}\n브랜치: ${targetBranch}\n생성된 파일 수: ${commitFiles.length}개`);
+
       } catch (err) {
         alert(err.message);
       } finally {
@@ -1686,7 +1939,7 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
     }
 
     // ============================================================
-    // 6. SPA 라우팅 및 뷰 관리
+    // 7. 반응형 미디어 쿼리와 충돌 없는 순수 클래스 라우팅
     // ============================================================
     const homeView = document.getElementById('home-view');
     const docPageView = document.getElementById('doc-page-view');
@@ -1699,8 +1952,8 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
     function routeToDoc() {
       viewTransition(() => {
         isDocMode = true;
-        homeView.style.display = 'none';
-        docPageView.style.display = window.innerWidth >= 1024 ? 'flex' : 'block';
+        homeView.classList.add('hidden');
+        docPageView.classList.add('active');
         
         openDocAi.style.display = 'flex';
         openDocMore.style.display = 'flex';
@@ -1714,8 +1967,8 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       viewTransition(() => {
         isDocMode = false;
         mobileTocBar.classList.remove('visible');
-        docPageView.style.display = 'none';
-        homeView.style.display = 'block';
+        docPageView.classList.remove('active');
+        homeView.classList.remove('hidden');
         
         openDocAi.style.display = 'none';
         openDocMore.style.display = 'none';
@@ -1725,17 +1978,11 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       });
     }
 
-    window.addEventListener('resize', () => {
-      if (docPageView.style.display !== 'none') {
-        docPageView.style.display = window.innerWidth >= 1024 ? 'flex' : 'block';
-      }
-    });
-
     document.querySelectorAll('.to-home-link').forEach(el => el.onclick = (e) => { e.preventDefault(); routeToHome(); });
     document.getElementById('header-logo').onclick = routeToHome;
 
     // ============================================================
-    // 7. 통합 모달 제어 엔진
+    // 8. 모달 & 로더 안전 제어 (탈출 불가 버그 해결)
     // ============================================================
     function openModal(modalId) {
       const modal = document.getElementById(modalId);
@@ -1765,6 +2012,12 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       if (l) l.classList.toggle('active', show);
     };
 
+    // 로더 모달 클릭 시 탈출 보장
+    const loaderModal = document.getElementById('loader-modal');
+    if (loaderModal) {
+      loaderModal.addEventListener('click', () => showLoader(false));
+    }
+
     document.querySelectorAll('.modal-close-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1785,7 +2038,7 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       });
     });
 
-    // 헤더 및 모달 바인딩 (안전 검증)
+    // 헤더 및 모달 버튼 바인딩
     const btnOpenSettings = document.getElementById('open-settings');
     if (btnOpenSettings) btnOpenSettings.onclick = () => openModal('settings-modal');
 
@@ -1820,8 +2073,14 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
     const btnOpenMobileToc = document.getElementById('open-mobile-toc-btn');
     if (btnOpenMobileToc) btnOpenMobileToc.onclick = () => openModal('mobile-toc-modal');
 
+    // "Mathit 아카데미" 클릭 시 1.2초 후 정상 종료 처리
     const btnOpenLoader = document.getElementById('open-loader');
-    if (btnOpenLoader) btnOpenLoader.onclick = () => showLoader(true);
+    if (btnOpenLoader) {
+      btnOpenLoader.onclick = () => {
+        showLoader(true);
+        setTimeout(() => showLoader(false), 1200);
+      };
+    }
 
     const btnExecDeploy = document.getElementById('btn-execute-deploy');
     if (btnExecDeploy) btnExecDeploy.onclick = deployMultiPageDocsToTarget;
@@ -1842,30 +2101,48 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // ============================================================
+    // 9. Layout Thrashing 제거 초경량 rAF 스크롤 감시자
+    // ============================================================
+    let isScrollTicking = false;
     window.addEventListener('scroll', () => {
-      if (!isDocMode) return;
-      if (window.innerWidth < 1024) {
-        if (window.scrollY > 80) mobileTocBar.classList.add('visible');
-        else mobileTocBar.classList.remove('visible');
-      }
+      if (!isDocMode || isScrollTicking) return;
+      isScrollTicking = true;
 
-      const headings = document.querySelectorAll('#doc-parsed-content h2');
-      let currentHeading = headings[0];
-      headings.forEach(h => {
-        if (h.getBoundingClientRect().top <= 140) currentHeading = h;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        if (window.innerWidth < 1024) {
+          if (scrollY > 80) mobileTocBar.classList.add('visible');
+          else mobileTocBar.classList.remove('visible');
+        }
+
+        const headings = document.querySelectorAll('#doc-parsed-content h2');
+        let currentHeading = headings[0];
+        const triggerPos = scrollY + 140;
+
+        for (let i = 0; i < headings.length; i++) {
+          if (headings[i].offsetTop <= triggerPos) {
+            currentHeading = headings[i];
+          } else {
+            break;
+          }
+        }
+
+        if (currentHeading) {
+          const id = currentHeading.id;
+          document.querySelectorAll('#pc-toc-list .toc-link').forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+          const mobText = document.getElementById('mobile-toc-current');
+          if (mobText) mobText.textContent = currentHeading.textContent;
+        }
+
+        isScrollTicking = false;
       });
-
-      if (currentHeading) {
-        const id = currentHeading.id;
-        document.querySelectorAll('#pc-toc-list .toc-link').forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-        });
-        document.getElementById('mobile-toc-current').textContent = currentHeading.textContent;
-      }
-    });
+    }, { passive: true });
 
     // ============================================================
-    // 8. 클립보드 복사 엔진 (Fallback 탑재)
+    // 10. 안전한 클립보드 복사 엔진
     // ============================================================
     function copyTextToClipboard(text, successCallback) {
       if (navigator.clipboard && window.isSecureContext) {
@@ -1908,10 +2185,6 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       }
     });
 
-    function escapeHtml(text) {
-      return (text || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
-    }
-
     // 다크모드 토글
     const btnTheme = document.getElementById('btn-theme');
     if (btnTheme) {
@@ -1921,43 +2194,59 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       };
     }
 
-    // 실시간 검색
+    // ============================================================
+    // 11. 디바운스 및 이벤트 위임 기반 실시간 검색 엔진
+    // ============================================================
     const searchInput = document.getElementById('search-input');
     const searchClear = document.getElementById('search-clear');
     const searchResults = document.getElementById('search-results');
     const searchEmpty = document.getElementById('search-empty');
+    let searchDebounceTimer = null;
 
     if (searchInput) {
       searchInput.oninput = (e) => {
+        clearTimeout(searchDebounceTimer);
         const q = e.target.value.trim().toLowerCase();
         if (searchClear) searchClear.style.display = q ? 'block' : 'none';
+
         if (!q) {
           if (searchResults) searchResults.innerHTML = '';
           if (searchEmpty) searchEmpty.style.display = 'none';
           return;
         }
 
-        const filtered = appState.docListFlat.filter(d => d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q));
-        if (searchEmpty) searchEmpty.style.display = filtered.length ? 'none' : 'block';
-        if (searchResults) {
-          searchResults.innerHTML = filtered.map((d, i) => `
-            <div class="flex-between clickable search-item-${i}" style="padding:14px 0; border-bottom:1px solid var(--divider);">
-              <span style="font-size:15px;">${escapeHtml(d.title)}</span>
-              <span style="font-size:12px; color:var(--sub);">${escapeHtml(d.category)}</span>
-            </div>
-          `).join('');
+        searchDebounceTimer = setTimeout(() => {
+          const filtered = appState.docListFlat.filter(d => 
+            d.title.toLowerCase().includes(q) || 
+            d.category.toLowerCase().includes(q) ||
+            (d.rawContent && d.rawContent.toLowerCase().includes(q))
+          );
 
-          filtered.forEach((d, i) => {
-            const item = searchResults.querySelector(`.search-item-${i}`);
-            if (item) {
-              item.onclick = () => {
-                selectDocument(d);
-                closeModal('search-modal');
-              };
-            }
-          });
-        }
+          if (searchEmpty) searchEmpty.style.display = filtered.length ? 'none' : 'block';
+          if (searchResults) {
+            searchResults.innerHTML = filtered.map(d => `
+              <div class="flex-between clickable search-result-item" data-path="${escapeHtml(d.path)}" style="padding:14px 0; border-bottom:1px solid var(--divider);">
+                <span style="font-size:15px;">${escapeHtml(d.title)}</span>
+                <span style="font-size:12px; color:var(--sub);">${escapeHtml(d.category)}</span>
+              </div>
+            `).join('');
+          }
+        }, 120);
       };
+    }
+
+    if (searchResults) {
+      searchResults.addEventListener('click', (e) => {
+        const item = e.target.closest('.search-result-item');
+        if (item) {
+          const path = item.getAttribute('data-path');
+          const targetDoc = appState.docListFlat.find(d => d.path === path);
+          if (targetDoc) {
+            selectDocument(targetDoc);
+            closeModal('search-modal');
+          }
+        }
+      });
     }
 
     if (searchClear) {
@@ -1969,66 +2258,93 @@ ${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPa
       };
     }
 
-    // 상용급 고무줄 제스처 엔진
+    // ============================================================
+    // 12. 캐싱 기반 고무줄 제스처 엔진 (정규식/리플로우 제거)
+    // ============================================================
     class RubberSlider {
       constructor(vp) {
         this.vp = vp;
         this.track = vp.firstElementChild;
         this.cards = [...this.track.children];
-        this.x = 0; this.v = 0;
+        this.x = 0;
+        this.v = 0;
+        this.limits = { min: 0, max: 0 };
         this.bindEvents();
       }
-      getLimits() { return { min: Math.min(0, -(this.track.scrollWidth - this.vp.clientWidth + 16)), max: 0 }; }
+
+      updateLimits() {
+        this.limits = {
+          min: Math.min(0, -(this.track.scrollWidth - this.vp.clientWidth + 16)),
+          max: 0
+        };
+      }
+
       setX(x, transition = '') {
+        this.x = x;
         this.track.style.transition = transition;
         this.track.style.transform = `translate3d(${x}px,0,0)`;
       }
+
       bindEvents() {
-        let sx, lx, lt, isDrag, moved;
+        let sx, lx, lt, isDrag = false;
+
         this.vp.onpointerdown = (e) => {
           if (e.pointerType === 'mouse' && e.button !== 0) return;
-          isDrag = true; moved = false;
-          sx = lx = e.clientX; lt = performance.now(); this.v = 0;
-          const match = this.track.style.transform.match(/translate3d\(([-\d.]+)px/);
-          this.x = match ? parseFloat(match[1]) : 0;
+          isDrag = true;
+          sx = lx = e.clientX;
+          lt = performance.now();
+          this.v = 0;
+          this.updateLimits();
           this.setX(this.x);
           this.vp.setPointerCapture(e.pointerId);
         };
+
         this.vp.onpointermove = (e) => {
           if (!isDrag) return;
           const dx = e.clientX - sx;
-          if (Math.abs(dx) > 4) moved = true;
-          const now = performance.now(), dt = now - lt;
-          if (dt > 0) { this.v = (e.clientX - lx) / dt; lx = e.clientX; lt = now; }
-          const { min, max } = this.getLimits();
+          const now = performance.now();
+          const dt = now - lt;
+          if (dt > 0) {
+            this.v = (e.clientX - lx) / dt;
+            lx = e.clientX;
+            lt = now;
+          }
+          const { min, max } = this.limits;
           let tx = this.x + dx;
           if (tx > max) tx = max + (tx - max) * 0.35;
           else if (tx < min) tx = min + (tx - min) * 0.35;
-          this.setX(tx);
+          this.track.style.transition = '';
+          this.track.style.transform = `translate3d(${tx}px,0,0)`;
         };
+
         const onEnd = (e) => {
           if (!isDrag) return;
           isDrag = false;
           try { this.vp.releasePointerCapture(e.pointerId); } catch (_) {}
-          const match = this.track.style.transform.match(/translate3d\(([-\d.]+)px/);
-          const cx = match ? parseFloat(match[1]) : this.x;
-          const { min, max } = this.getLimits();
+          
+          const dx = e.clientX - sx;
+          let cx = this.x + dx;
+          const { min, max } = this.limits;
+
           if (cx > max || cx < min) {
-            this.x = cx > max ? max : min;
-            this.setX(this.x, 'transform 0.48s cubic-bezier(0.16,1,0.3,1)');
+            this.setX(cx > max ? max : min, 'transform 0.48s cubic-bezier(0.16,1,0.3,1)');
             return;
           }
+
           const target = cx + this.v * 120;
           const offsets = this.cards.map(c => -c.offsetLeft + 16);
-          this.x = offsets.reduce((prev, curr) => {
+          const best = offsets.reduce((prev, curr) => {
             const clamped = Math.max(min, Math.min(max, curr));
             return Math.abs(clamped - target) < Math.abs(prev - target) ? clamped : prev;
           }, offsets[0]);
-          this.setX(this.x, 'transform 0.42s cubic-bezier(0.22,1,0.36,1)');
+
+          this.setX(best, 'transform 0.42s cubic-bezier(0.22,1,0.36,1)');
         };
+
         this.vp.onpointerup = this.vp.onpointercancel = onEnd;
       }
     }
+
     document.querySelectorAll('.rubber-viewport').forEach(vp => new RubberSlider(vp));
   </script>
 

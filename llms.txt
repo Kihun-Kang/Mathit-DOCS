@@ -1,8 +1,8 @@
 # Mathit Documentation
 > Domain: https://mathit-docs.pages.dev
-> Architecture: High-performance Static Tech Documentation Platform with KaTeX Engine
+> Description: High-performance Static Tech Documentation Platform with KaTeX Engine
 
-## Curated Technical Documents
+## Technical Documents
 - [README](https://mathit-docs.pages.dev/README.html): Category: 개요
 - [개발자의 한마디](https://mathit-docs.pages.dev/0 들어가기 전에/개발자의 한마디.html): Category: 들어가기 전에
 - [식별자 규칙](https://mathit-docs.pages.dev/1 기초 개념/1.1 식별자 규칙.html): Category: 기초 개념

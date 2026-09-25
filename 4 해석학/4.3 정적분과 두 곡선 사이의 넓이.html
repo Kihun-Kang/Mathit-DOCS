@@ -4,34 +4,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>정적분과 두 곡선 사이의 넓이 - 해석학 | Mathit</title>
-  <meta name="description" content="Mathit 수식 엔진 및 GitHub 연동 표준 기술 문서 플랫폼입니다.">
+  <meta name="description" content="해석학 - 정적분과 두 곡선 사이의 넓이 기술 명세 및 수식 가이드입니다.">
   <meta name="keywords" content="Mathit, 기술문서, Markdown, KaTeX, mathit-ren, SSG">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://Kihun-Kang/mathit-docs/4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html">
+  <link rel="canonical" href="https://mathit-docs.pages.dev/4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html">
 
   <!-- AI / LLM Context Manifest (llms.txt) -->
-  <link rel="help" type="text/markdown" href="https://mathit.dev/llms.txt" title="LLM Architecture Manifest">
+  <link rel="help" type="text/markdown" href="https://mathit-docs.pages.dev/llms.txt" title="LLM Architecture Manifest">
+  <link rel="alternate" type="text/markdown" href="https://mathit-docs.pages.dev/llms-full.txt" title="Full LLM Documentation Corpus">
   <meta name="ai-content-declaration" content="semantic-markdown, mathit-highlight-enabled, zero-mock, multi-page-ssg">
 
   <!-- Open Graph & Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:site_name" content="Mathit">
-  <meta property="og:title" content="Mathit - 기술 문서 플랫폼">
-  <meta property="og:description" content="표준 디렉토리 구조 기반의 차세대 정적 문서 사이트">
+  <meta property="og:title" content="정적분과 두 곡선 사이의 넓이 - 해석학 | Mathit">
+  <meta property="og:description" content="해석학 - 정적분과 두 곡선 사이의 넓이 기술 명세 및 수식 가이드입니다.">
+  <meta property="og:url" content="https://mathit-docs.pages.dev/4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Schema.org JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Mathit",
-    "url": "https://mathit.dev/"
-  }
-  </script>
+  <!-- Schema.org JSON-LD (AI 지식 그래프 최적화) -->
+  
 
-  <!-- 라이브러리 로드 (KaTeX JS 엔진 추가로 수식 렌더링 정상화) -->
+  <!-- 라이브러리 로드 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -52,7 +47,6 @@
       --send-btn: #0f172a; --code-bg: #f8fafc; --code-text: #0f172a;
       --callout-info: #eff6ff; --callout-info-t: #1e40af;
     }
-    /* 퓨어 무채색 블랙 다크모드 (푸른빛 100% 제거) */
     body.dark-mode {
       --bg: #000000; --text: #f5f5f7; --text-body: #d1d5db; --sub: #86868b; --muted: #555555;
       --border: #2c2c2e; --divider: #1c1c1e; --input-bg: #1c1c1e;
@@ -89,6 +83,7 @@
       border-bottom: 1px solid transparent;
     }
     .logo { font-size: 32px; font-weight: 700; line-height: 1; }
+    .logo a { text-decoration: none; color: inherit; }
     .nav-icon { font-size: 22px; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
     /* 모바일 서브 헤더 */
@@ -182,7 +177,7 @@
     .toc-item a:hover { background: var(--divider); }
     .toc-item a.active { color: var(--primary); font-weight: 600 !important; background: var(--nav-active); }
 
-    /* 타이포그래피 및 뷰 토글 (JS 인라인 스타일 대신 클래스 제어로 미디어 쿼리 완벽 호환) */
+    /* 뷰 토글 */
     #home-view.hidden { display: none !important; }
     #doc-page-view { display: none; }
     #doc-page-view.active { display: block; }
@@ -221,6 +216,7 @@
     .feedback-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--bg); border-radius: 4px; font-size: 13px; }
     .feedback-btn.active { background: var(--primary); color: #fff; }
 
+    /* 이동 가능한 페이징 카드 */
     .doc-pagination { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--divider); }
     .page-nav-card { padding: 16px; background: var(--divider); border-radius: 4px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 4px; }
     .doc-meta-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; font-size: 12px; color: var(--muted); }
@@ -243,7 +239,7 @@
       padding: 40px 16px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6;
     }
 
-    /* 관리자 플로팅 액션 버튼 */
+    /* 관리자 플로팅 액션 버튼 (미리보기 화면 전용) */
     .admin-fab {
       position: fixed; bottom: 20px; right: 20px; z-index: 8000;
       background: var(--text); color: var(--bg);
@@ -252,7 +248,7 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.25);
     }
 
-    /* PC 데스크톱 화면 (1024px 이상) */
+    /* PC 데스크톱 화면 */
     @media (min-width: 1024px) {
       header { border-bottom-color: var(--border); padding: 0 32px; }
       #open-doc { display: none !important; }
@@ -336,13 +332,40 @@
       }
     }
 
-    /* TeX M 로더 */
-    .tex-loader { position: relative; font-family: 'KaTeX_Math', serif; font-style: italic; font-size: 110px; line-height: 1; color: var(--border); }
-    .tex-loader::after {
-      content: "M"; position: absolute; left: 0; top: 0; width: 100%; height: 0%;
-      overflow: hidden; color: var(--primary); animation: fillUp 2s infinite ease-in-out;
+    /* TeX M 로더 (정중앙, 딱딱한 단계별 차오름, 우측 꼬리 100% 채움) */
+    #loader-modal {
+      align-items: center !important;
+      justify-content: center !important;
     }
-    @keyframes fillUp { 0%, 100% { height: 0; } 50% { height: 100%; } }
+    .tex-loader {
+      position: relative;
+      display: inline-block;
+      font-family: 'KaTeX_Math', 'CMU Serif', serif;
+      font-style: italic;
+      font-size: 110px;
+      line-height: 1;
+      color: var(--border);
+      user-select: none;
+    }
+    .tex-loader::after {
+      content: "M";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      color: var(--primary);
+      clip-path: inset(100% -60px 0 -60px);
+      animation: fillUpStep 1.25s steps(1) infinite;
+    }
+    @keyframes fillUpStep {
+      0%, 14% { clip-path: inset(100% -60px 0 -60px); }
+      15%, 32% { clip-path: inset(75% -60px 0 -60px); }
+      33%, 50% { clip-path: inset(50% -60px 0 -60px); }
+      51%, 68% { clip-path: inset(25% -60px 0 -60px); }
+      69%, 88% { clip-path: inset(0% -60px 0 -60px); }
+      89%, 100% { clip-path: inset(100% -60px 0 -60px); }
+    }
   </style>
 <style id="mathit-ren-pro-styles">
 /* ── [다크 배경 모드] (VS Code Dark Modern + GitHub Dark 베이스) ── */
@@ -384,18 +407,66 @@
 .mr-light-env .mr-solver      { color: #ffffff !important; background: #cf222e; font-weight: 900; padding: 1px 4px; border-radius: 3px; }
 .mr-light-env .mr-direction   { color: #0086b3 !important; font-weight: 600; }
 .mr-light-env .mr-punctuation { color: #8c959f !important; }
-</style></head>
-<body class="dark-mode" style="overflow: hidden;">
+</style><script>
+        window.__IS_DEPLOYED_BUILD__ = true;
+        window.__MATHIT_DOCS_INDEX__ = [{"title":"README","category":"개요","path":"README.md","htmlPath":"README.html"},{"title":"개발자의 한마디","category":"들어가기 전에","path":"0 들어가기 전에/개발자의 한마디.md","htmlPath":"0 들어가기 전에/개발자의 한마디.html"},{"title":"식별자 규칙","category":"기초 개념","path":"1 기초 개념/1.1 식별자 규칙.md","htmlPath":"1 기초 개념/1.1 식별자 규칙.html"},{"title":"캔버스와 뷰포트 설정","category":"기초 개념","path":"1 기초 개념/1.2 캔버스와 뷰포트 설정.md","htmlPath":"1 기초 개념/1.2 캔버스와 뷰포트 설정.html"},{"title":"수치, 단위, 연산","category":"기초 개념","path":"1 기초 개념/1.3 수치, 단위, 연산.md","htmlPath":"1 기초 개념/1.3 수치, 단위, 연산.html"},{"title":"색상과 텍스쳐","category":"기초 개념","path":"1 기초 개념/1.4 색상과 텍스쳐.md","htmlPath":"1 기초 개념/1.4 색상과 텍스쳐.html"},{"title":"점과 좌표계 다루기","category":"2D 평면기하","path":"2 2D 평면기하/2.1 점과 좌표계 다루기.md","htmlPath":"2 2D 평면기하/2.1 점과 좌표계 다루기.html"},{"title":"연결 연산자와 기본 도형","category":"2D 평면기하","path":"2 2D 평면기하/2.2 연결 연산자와 기본 도형.md","htmlPath":"2 2D 평면기하/2.2 연결 연산자와 기본 도형.html"},{"title":"기하 내장 계산 엔진","category":"2D 평면기하","path":"2 2D 평면기하/2.3 기하 내장 계산 엔진.md","htmlPath":"2 2D 평면기하/2.3 기하 내장 계산 엔진.html"},{"title":"삼각형의 7대 심","category":"2D 평면기하","path":"2 2D 평면기하/2.4 삼각형의 7대 심.md","htmlPath":"2 2D 평면기하/2.4 삼각형의 7대 심.html"},{"title":"교점 탐색기","category":"2D 평면기하","path":"2 2D 평면기하/2.5 교점 탐색기.md","htmlPath":"2 2D 평면기하/2.5 교점 탐색기.html"},{"title":"좌표축과 모눈종이 셋팅","category":"주석과 스타일링","path":"3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md","htmlPath":"3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html"},{"title":"8방위 알아보기","category":"주석과 스타일링","path":"3 주석과 스타일링/3.2 8방위 알아보기.md","htmlPath":"3 주석과 스타일링/3.2 8방위 알아보기.html"},{"title":"기호 지시어","category":"주석과 스타일링","path":"3 주석과 스타일링/3.3 기호 지시어.md","htmlPath":"3 주석과 스타일링/3.3 기호 지시어.html"},{"title":"영역 채우기와 빗금 패턴","category":"주석과 스타일링","path":"3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md","htmlPath":"3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html"},{"title":"양함수 그래프","category":"해석학","path":"4 해석학/4.1 양함수 그래프.md","htmlPath":"4 해석학/4.1 양함수 그래프.html"},{"title":"미분과 기하학적 접선","category":"해석학","path":"4 해석학/4.2 미분과 기하학적 접선.md","htmlPath":"4 해석학/4.2 미분과 기하학적 접선.html"},{"title":"정적분과 두 곡선 사이의 넓이","category":"해석학","path":"4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md","htmlPath":"4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html"},{"title":"고급 곡선 표현","category":"해석학","path":"4 해석학/4.4 고급 곡선 표현.md","htmlPath":"4 해석학/4.4 고급 곡선 표현.html"},{"title":"벡터와 선형대수","category":"확통, 이산수학, 벡터","path":"5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md","htmlPath":"5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html"},{"title":"확률과 통계 시각화","category":"확통, 이산수학, 벡터","path":"5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md","htmlPath":"5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html"},{"title":"수형도","category":"확통, 이산수학, 벡터","path":"5 확통, 이산수학, 벡터/5.3 수형도.md","htmlPath":"5 확통, 이산수학, 벡터/5.3 수형도.html"},{"title":"네트워크 그래프","category":"확통, 이산수학, 벡터","path":"5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md","htmlPath":"5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html"},{"title":"3D 카메라 뷰포트","category":"입체기하와 공간도형","path":"6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md","htmlPath":"6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html"},{"title":"기본 입체도형","category":"입체기하와 공간도형","path":"6 입체기하와 공간도형/6.2 기본 입체도형.md","htmlPath":"6 입체기하와 공간도형/6.2 기본 입체도형.html"},{"title":"숨은선 자동 점선 처리","category":"입체기하와 공간도형","path":"6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md","htmlPath":"6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html"},{"title":"3D 매개변수 곡면","category":"입체기하와 공간도형","path":"6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md","htmlPath":"6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html"},{"title":"역기하 제약 해결사","category":"고급 엔진","path":"7 고급 엔진/7.1 역기하 제약 해결사.md","htmlPath":"7 고급 엔진/7.1 역기하 제약 해결사.html"},{"title":"CSG 연산","category":"고급 엔진","path":"7 고급 엔진/7.2 CSG 연산.md","htmlPath":"7 고급 엔진/7.2 CSG 연산.html"},{"title":"재사용 컴포넌트 제작","category":"고급 엔진","path":"7 고급 엔진/7.3 재사용 컴포넌트 제작.md","htmlPath":"7 고급 엔진/7.3 재사용 컴포넌트 제작.html"}];
+      </script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "정적분과 두 곡선 사이의 넓이",
+      "name": "정적분과 두 곡선 사이의 넓이",
+      "description": "해석학 - 정적분과 두 곡선 사이의 넓이 기술 명세 및 가이드",
+      "articleSection": "해석학",
+      "url": "https://mathit-docs.pages.dev/4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html",
+      "inLanguage": "ko-KR",
+      "mainEntityOfPage": "https://mathit-docs.pages.dev/4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html",
+      "about": {
+        "@type": "Thing",
+        "name": "Mathit Documentation"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Mathit",
+        "url": "https://mathit-docs.pages.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "문서 홈",
+          "item": "https://mathit-docs.pages.dev/index.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "해석학"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "정적분과 두 곡선 사이의 넓이",
+          "item": "https://mathit-docs.pages.dev/4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html"
+        }
+      ]
+    }
+  ]
+}</script></head>
+<body class="" style="overflow: hidden;">
 
   <!-- 상단 헤더 -->
   <header class="flex-between">
     <div class="flex-center" style="gap: 14px;">
       <i class="ph ph-list nav-icon" id="open-doc" title="목차 열기"></i>
-      <span class="logo mono clickable" id="header-logo"><span style="color: var(--primary);">M</span>athit</span>
+      <span class="logo mono clickable" id="header-logo"><a href="index.html" class="to-home-link"><span style="color: var(--primary);">M</span>athit</a></span>
     </div>
     <div class="flex-center" style="gap: 14px;">
       <i class="ph ph-magnifying-glass nav-icon" id="open-search" title="검색"></i>
-      <i class="ph ph-sun nav-icon" id="btn-theme" title="다크모드"></i>
+      <i class="ph ph-moon nav-icon" id="btn-theme" title="다크모드"></i>
       <i class="ph ph-gear nav-icon" id="open-settings" title="설정"></i>
       <i class="ph-fill ph-sparkle nav-icon" id="open-doc-ai" title="AI 메뉴" style="display: flex;"></i>
       <i class="ph ph-dots-three-vertical nav-icon" id="open-doc-more" title="문서 옵션" style="display: flex;"></i>
@@ -404,7 +475,7 @@
 
   <!-- 모바일 서브 바 -->
   <div class="mobile-toc-bar" id="mobile-toc-bar">
-    <span style="font-size: 13px; color: var(--text);" class="semi-bold" id="mobile-toc-current">수형도의 기본 구조</span>
+    <span style="font-size: 13px; color: var(--text);" class="semi-bold" id="mobile-toc-current">문서 소목차</span>
     <div class="flex-center clickable" id="open-mobile-toc-btn" style="gap: 4px; font-size: 12px; color: var(--sub); background: var(--divider); padding: 4px 8px; border-radius: 4px;">
       <i class="ph ph-list-dashes"></i>
       <span>소목차</span>
@@ -414,16 +485,16 @@
   <!-- 전체 레이아웃 (데스크톱: 좌측 상시 사이드바) -->
   <div class="app-layout">
     
-    <!-- 데스크톱 좌측 상시 고정 사이드바 -->
+    <!-- 데스크톱 좌측 사이드바 -->
     <aside class="app-sidebar" id="app-sidebar">
-      <a class="toc-home to-home-link clickable">문서 홈</a>
+      <a href="index.html" class="toc-home to-home-link clickable">문서 홈</a>
       <div id="sidebar-repo-tree">
           <div style="margin-bottom:24px;">
             <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">개요</div>
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="README.md">README</a>
+                  <a href="README.html" class="clickable doc-sidebar-link" data-path="README.md">README</a>
                 </li>
               
             </ul>
@@ -434,7 +505,7 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
+                  <a href="0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                 </li>
               
             </ul>
@@ -445,19 +516,19 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
+                  <a href="1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
+                  <a href="1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
+                  <a href="1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
+                  <a href="1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
                 </li>
               
             </ul>
@@ -468,23 +539,23 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
+                  <a href="2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
+                  <a href="2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
+                  <a href="2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
+                  <a href="2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
+                  <a href="2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
                 </li>
               
             </ul>
@@ -495,19 +566,19 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
+                  <a href="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
+                  <a href="3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
+                  <a href="3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
+                  <a href="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
                 </li>
               
             </ul>
@@ -518,19 +589,19 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
+                  <a href="4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link" data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
+                  <a href="4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link" data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link active" data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
+                  <a href="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link active" data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
+                  <a href="4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link" data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
                 </li>
               
             </ul>
@@ -541,19 +612,19 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
+                  <a href="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
+                  <a href="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
+                  <a href="5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
+                  <a href="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
                 </li>
               
             </ul>
@@ -564,19 +635,19 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
+                  <a href="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
+                  <a href="6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
+                  <a href="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
+                  <a href="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
                 </li>
               
             </ul>
@@ -587,15 +658,15 @@
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
+                  <a href="7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
+                  <a href="7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
+                  <a href="7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
                 </li>
               
             </ul>
@@ -628,7 +699,7 @@ Mathit!</div>
         <section>
           <div class="section-title">Everywhere Mathit!</div>
           <div class="rubber-viewport">
-            <div class="rubber-track" style="transform: translate3d(0px, 0px, 0px); transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);">
+            <div class="rubber-track">
               <div class="card everywhere-card clickable" style="background:#1e293b;">
                 <div class="card-title">웹 플레이그라운드</div>
                 <div style="text-align: right; color:#94a3b8; font-size:20px;"><i class="ph ph-caret-right"></i></div>
@@ -644,7 +715,7 @@ Mathit!</div>
         <section>
           <div class="section-title">창의적으로 생각해요</div>
           <div class="rubber-viewport">
-            <div class="rubber-track" style="transform: translate3d(0px, 0px, 0px); transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);">
+            <div class="rubber-track">
               <div class="card gray-card clickable" style="background:var(--g1); color:var(--g1-t);"><div class="card-title">기하학적 사고</div><i class="ph ph-caret-right" style="align-self:flex-end;"></i></div>
               <div class="card gray-card clickable" style="background:var(--g2); color:var(--g2-t);"><div class="card-title">알고리즘 퍼즐</div><i class="ph ph-caret-right" style="align-self:flex-end;"></i></div>
               <div class="card gray-card clickable" style="background:var(--g3); color:var(--g3-t);"><div class="card-title">수학적 모델링</div><i class="ph ph-caret-right" style="align-self:flex-end;"></i></div>
@@ -690,7 +761,7 @@ Mathit!</div>
       <div id="doc-page-view" class="active">
         <article class="doc-article-wrap">
           <nav class="breadcrumb">
-            <a href="#" class="to-home-link">문서 홈</a>
+            <a href="index.html" class="to-home-link">문서 홈</a>
             <i class="ph ph-caret-right" style="font-size:10px;"></i>
             <span id="doc-breadcrumb-group">해석학</span>
             <i class="ph ph-caret-right" style="font-size:10px;"></i>
@@ -755,8 +826,8 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           </div>
 
           <div class="doc-pagination">
-            <div class="page-nav-card clickable" id="nav-prev-doc" style="visibility: visible;"><span style="font-size:11px; color:var(--sub);">← 이전 문서</span><span class="semi-bold" id="prev-doc-label" style="font-size:14px;">미분과 기하학적 접선</span></div>
-            <div class="page-nav-card clickable" id="nav-next-doc" style="text-align: right; visibility: visible;"><span style="font-size:11px; color:var(--sub);">다음 문서 →</span><span class="semi-bold" id="next-doc-label" style="font-size:14px;">고급 곡선 표현</span></div>
+            <a href="4 해석학/4.2 미분과 기하학적 접선.html" class="page-nav-card clickable" id="nav-prev-doc" style="visibility: visible;"><span style="font-size:11px; color:var(--sub);">← 이전 문서</span><span class="semi-bold" id="prev-doc-label" style="font-size:14px;">미분과 기하학적 접선</span></a>
+            <a href="4 해석학/4.4 고급 곡선 표현.html" class="page-nav-card clickable" id="nav-next-doc" style="text-align: right; visibility: visible;" data-path="0 들어가기 전에/개발자의 한마디.md"><span style="font-size:11px; color:var(--sub);">다음 문서 →</span><span class="semi-bold" id="next-doc-label" style="font-size:14px;">고급 곡선 표현</span></a>
           </div>
 
           <div class="doc-meta-footer">
@@ -779,9 +850,10 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     </div>
   </div>
 
+  <!-- 관리자 플로팅 버튼 -->
   
 
-  <!-- 관리자 모달 -->
+  <!-- 관리자 전용 콘솔 모달 -->
   
 
   <!-- 설정 모달 -->
@@ -793,9 +865,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         <i class="ph ph-x modal-close-btn clickable" style="font-size:20px; color:var(--sub);"></i>
       </div>
       <div>
-        <div class="sheet-item flex-between clickable" id="btn-settings-open-admin">
-          <div class="flex-center" style="gap:12px;"><i class="ph ph-git-branch" style="font-size:20px; color:var(--primary);"></i><span>GitHub 동기화 관리 콘솔 열기</span></div><i class="ph ph-caret-right" style="color:var(--muted);"></i>
-        </div>
+        
         <div class="sheet-item flex-between"><div class="flex-center" style="gap:12px;"><i class="ph ph-translate" style="font-size:20px; color:var(--sub);"></i><span>언어 (Language)</span></div><i class="ph ph-caret-right" style="color:var(--muted);"></i></div>
         <div class="sheet-item flex-between"><div class="flex-center" style="gap:12px;"><i class="ph ph-info" style="font-size:20px; color:var(--sub);"></i><span>버전 (v4.0.0)</span></div></div>
       </div>
@@ -836,14 +906,14 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       <i class="ph ph-x modal-close-btn nav-icon" style="cursor:pointer;"></i>
     </div>
     <div style="flex:1; overflow-y:auto; padding:20px 24px 40px;">
-      <a class="toc-home to-home-link clickable">문서 홈</a>
+      <a href="index.html" class="toc-home to-home-link clickable">문서 홈</a>
       <div id="mobile-repo-tree-container">
           <div style="margin-bottom:24px;">
             <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">개요</div>
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="README.md">README</a>
+                  <a href="README.html" class="clickable doc-sidebar-link" data-path="README.md">README</a>
                 </li>
               
             </ul>
@@ -854,7 +924,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
+                  <a href="0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link" data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                 </li>
               
             </ul>
@@ -865,19 +935,19 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
+                  <a href="1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
+                  <a href="1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
+                  <a href="1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
+                  <a href="1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link" data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
                 </li>
               
             </ul>
@@ -888,23 +958,23 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
+                  <a href="2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
+                  <a href="2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
+                  <a href="2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
+                  <a href="2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
+                  <a href="2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link" data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
                 </li>
               
             </ul>
@@ -915,19 +985,19 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
+                  <a href="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
+                  <a href="3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
+                  <a href="3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
+                  <a href="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link" data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
                 </li>
               
             </ul>
@@ -938,19 +1008,19 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
+                  <a href="4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link" data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
+                  <a href="4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link" data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link active" data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
+                  <a href="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link active" data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
+                  <a href="4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link" data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
                 </li>
               
             </ul>
@@ -961,19 +1031,19 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
+                  <a href="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
+                  <a href="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
+                  <a href="5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
+                  <a href="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link" data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
                 </li>
               
             </ul>
@@ -984,19 +1054,19 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
+                  <a href="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
+                  <a href="6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
+                  <a href="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
+                  <a href="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link" data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
                 </li>
               
             </ul>
@@ -1007,15 +1077,15 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
+                  <a href="7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
+                  <a href="7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
                 </li>
               
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
+                  <a href="7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link" data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
                 </li>
               
             </ul>
@@ -1029,7 +1099,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     <div class="flex-center" style="padding:14px 16px; gap:12px; border-bottom:1px solid var(--border);">
       <div class="search-input-wrap flex-center">
         <i class="ph ph-magnifying-glass" style="color:var(--sub);"></i>
-        <input type="text" id="search-input" style="flex:1; border:none; outline:none; background:transparent; font-family:inherit; font-size:15px; color:var(--text);" placeholder="불러온 실제 문서 검색...">
+        <input type="text" id="search-input" style="flex:1; border:none; outline:none; background:transparent; font-family:inherit; font-size:15px; color:var(--text);" placeholder="문서 제목 또는 본문 검색...">
         <i class="ph ph-x-circle clickable" id="search-clear" style="display:none; color:var(--muted);"></i>
       </div>
       <span class="clickable modal-close-btn" style="font-size:15px; color:var(--sub);">취소</span>
@@ -1083,7 +1153,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     </div>
   </div>
 
-  <!-- TeX M 로딩 모달 (배경 클릭 탈출 가능) -->
+  <!-- TeX M 로딩 모달 -->
   <div class="modal-overlay flex-center clickable active" id="loader-modal" style="justify-content:center; z-index:10005;">
     <div class="tex-loader">M</div>
   </div>
@@ -1092,14 +1162,17 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
 
   <script>
     // ============================================================
-    // 1. 애플리케이션 상태 & 표준 유틸리티
+    // 1. 배포본 vs 미리보기 모드 감지 (배포본은 0초 즉각 렌더링)
     // ============================================================
+    const isDeployedBuild = !!window.__IS_DEPLOYED_BUILD__;
+    const PRODUCTION_BASE_URL = "https://mathit-docs.pages.dev";
+
     const appState = {
       source: { repo: '', branch: 'main', token: '' },
       target: { repo: '', branch: 'gh-pages', token: '' },
       categories: {},
       currentDoc: null,
-      docListFlat: []
+      docListFlat: window.__MATHIT_DOCS_INDEX__ || []
     };
 
     function viewTransition(updateCallback) {
@@ -1141,17 +1214,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       return noExt.replace(/^\d+(?:\.\d+)*[\s.\-_]+/, '').trim() || noExt;
     }
 
-    // 최신 표준 TextEncoder/TextDecoder 기반의 안전한 Base64 변환
-    function utf8ToBase64(str) {
-      const bytes = new TextEncoder().encode(str);
-      let binary = '';
-      const len = bytes.byteLength;
-      for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return btoa(binary);
-    }
-
     function base64ToUtf8(str) {
       const binary = atob((str || '').replace(/\s/g, ''));
       const bytes = new Uint8Array(binary.length);
@@ -1166,7 +1228,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     }
 
     // ============================================================
-    // 2. /images 전용 격리 및 안전한 이미지 핸들러
+    // 2. /images 전용 격리 및 이미지 오류 핸들러
     // ============================================================
     window.handleImageError = function(img, originalPath) {
       img.onerror = null;
@@ -1209,7 +1271,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     }
 
     // ============================================================
-    // 3. GitHub 소스 트리 파싱 (중첩 서브 디렉토리 전체 수용)
+    // 3. GitHub 소스 파싱 (미리보기 콘솔용)
     // ============================================================
     async function loadSourceRepo(ownerRepo, branch, token) {
       if (!ownerRepo || !ownerRepo.includes('/')) {
@@ -1246,7 +1308,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         if (validDocFiles.length === 0) {
           appState.categories = {};
           appState.docListFlat = [];
-          document.getElementById('sidebar-repo-tree').innerHTML = '<div class="empty-state-notice">저장소 내에 .md 또는 .mathit 파일이 없습니다.</div>';
+          document.getElementById('sidebar-repo-tree').innerHTML = '<div class="empty-state-notice">저장소 내에 문서 파일(.md)이 없습니다.</div>';
           document.getElementById('mobile-repo-tree-container').innerHTML = '<div class="empty-state-notice">문서 파일이 없습니다.</div>';
           alert('저장소 내에 마크다운(.md) 또는 .mathit 문서 파일이 없습니다.');
           return;
@@ -1337,7 +1399,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             <ul style="list-style:none;">
               ${docs.map(doc => `
                 <li class="toc-item">
-                  <a href="#" class="clickable doc-sidebar-link" data-path="${escapeHtml(doc.path)}">${escapeHtml(doc.title)}</a>
+                  <a href="${escapeHtml(doc.htmlPath)}" class="clickable doc-sidebar-link" data-path="${escapeHtml(doc.path)}">${escapeHtml(doc.title)}</a>
                 </li>
               `).join('')}
             </ul>
@@ -1351,26 +1413,56 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       if (mobileSidebar) mobileSidebar.innerHTML = html;
     }
 
-    // 사이드바 클릭 이벤트 위임 (중복 리스너 등록 방지 및 메모리 최적화)
+    // ============================================================
+    // 4. 클릭 내비게이션
+    // ============================================================
     document.addEventListener('click', (e) => {
       const link = e.target.closest('.doc-sidebar-link');
-      if (!link) return;
-      e.preventDefault();
-      const path = link.getAttribute('data-path');
-      const targetDoc = appState.docListFlat.find(d => d.path === path);
-      if (targetDoc) {
-        selectDocument(targetDoc);
-        closeModal('doc-nav-modal');
+      if (link) {
+        if (!isDeployedBuild) {
+          e.preventDefault();
+          const path = link.getAttribute('data-path');
+          const targetDoc = appState.docListFlat.find(d => d.path === path);
+          if (targetDoc) {
+            selectDocument(targetDoc);
+            closeModal('doc-nav-modal');
+          }
+        }
+        return;
+      }
+
+      const homeLink = e.target.closest('.to-home-link');
+      if (homeLink) {
+        if (!isDeployedBuild) {
+          e.preventDefault();
+          routeToHome();
+        }
+        return;
+      }
+
+      const prevDoc = e.target.closest('#nav-prev-doc');
+      if (prevDoc && !isDeployedBuild) {
+        e.preventDefault();
+        const p = prevDoc.getAttribute('data-path');
+        const target = appState.docListFlat.find(d => d.path === p);
+        if (target) selectDocument(target);
+        return;
+      }
+      const nextDoc = e.target.closest('#nav-next-doc');
+      if (nextDoc && !isDeployedBuild) {
+        e.preventDefault();
+        const p = nextDoc.getAttribute('data-path');
+        const target = appState.docListFlat.find(d => d.path === p);
+        if (target) selectDocument(target);
+        return;
       }
     });
 
     // ============================================================
-    // 4. 마크다운 & KaTeX 수식 순수 파싱 엔진
+    // 5. 마크다운 & KaTeX 파서
     // ============================================================
     function parseInlineMarkdown(text) {
       const mathTokens = [];
-
-      // 1. 인라인 수식 $...$ 보호 및 KaTeX 렌더링
       text = text.replace(/\$([^\$\n]+?)\$/g, (_, math) => {
         let rendered = `$${math}$`;
         if (typeof katex !== 'undefined') {
@@ -1385,15 +1477,11 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         return token;
       });
 
-      // 2. HTML 특수문자 이스케이프
       text = escapeHtml(text);
-
-      // 3. 인라인 코드 및 기본 타이포그래피
       text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
       text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
-      // 4. 수식 토큰 복원
       mathTokens.forEach((rendered, i) => {
         text = text.replace(`__MATH_TOKEN_${i}__`, rendered);
       });
@@ -1420,7 +1508,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         const rawLine = lines[i];
         const trimmed = rawLine.trim();
 
-        // 1. 코드 블록 처리
         if (trimmed.startsWith('```')) {
           if (inCallout) { html += '</div></div>'; inCallout = false; }
           if (inBlockMath) { inBlockMath = false; mathBuffer = []; }
@@ -1461,13 +1548,11 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           continue;
         }
 
-        // 2. 디스플레이 블록 수식 $$ ... $$ 처리
         if (trimmed.startsWith('$$')) {
           if (inCallout) { html += '</div></div>'; inCallout = false; }
           if (!inBlockMath) {
             const rest = trimmed.replace(/^\$\$/, '');
             if (rest.endsWith('$$') && rest.length >= 2) {
-              // 한 줄 형태: $$ 수식 $$
               const formula = rest.replace(/\$\$$/, '').trim();
               let rendered = formula;
               if (typeof katex !== 'undefined') {
@@ -1497,7 +1582,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           continue;
         }
 
-        // 3. 콜아웃 블록 시작 (> [!INFO] / > [!NOTE])
         if (trimmed.startsWith('> [!INFO]') || trimmed.startsWith('> [!NOTE]')) {
           if (inCallout) html += '</div></div>';
           inCallout = true;
@@ -1505,7 +1589,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           continue;
         }
 
-        // 콜아웃 내부 본문 진행
         if (inCallout) {
           if (trimmed.startsWith('>')) {
             const calloutContent = parseInlineMarkdown(trimmed.replace(/^>\s?/, ''));
@@ -1524,14 +1607,12 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           }
         }
 
-        // 4. 단독 이미지 라인 (HTML5 명세 준수: <p> 내부에 <figure> 중첩 차단)
         const singleImageMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
         if (singleImageMatch) {
           html += resolveMarkdownImage(singleImageMatch[2], singleImageMatch[1]);
           continue;
         }
 
-        // 5. 제목(헤더)
         if (trimmed.startsWith('## ')) {
           const title = trimmed.replace('## ', '').trim();
           const id = 'sec-' + (headings.length + 1);
@@ -1544,7 +1625,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           continue;
         }
 
-        // 6. 일반 문단 (줄 내 이미지 지원)
         if (trimmed !== '') {
           const hasImg = trimmed.match(/!\[(.*?)\]\((.*?)\)/);
           if (hasImg) {
@@ -1599,7 +1679,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     }
 
     // ============================================================
-    // 5. 실제 문서 로드 & 상태 동기화
+    // 6. 문서 선택 (미리보기 화면 갱신)
     // ============================================================
     async function fetchActualFileContent(path) {
       if (appState.currentDoc && appState.currentDoc.path === path && appState.currentDoc.rawContent) {
@@ -1607,9 +1687,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       }
 
       const { repo, branch, token } = appState.source;
-      if (!repo) {
-        return `# 환영합니다\n문서 내용이 준비되었습니다.`;
-      }
+      if (!repo) return `# 문서가 준비되었습니다.`;
 
       const [owner, r] = repo.split('/');
       const headers = { 'Accept': 'application/vnd.github.v3+json' };
@@ -1620,21 +1698,19 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
 
       if (res.ok) {
         const data = await res.json();
-        if (data.content) {
-          return base64ToUtf8(data.content);
-        }
+        if (data.content) return base64ToUtf8(data.content);
       }
 
       const rawUrl = `https://raw.githubusercontent.com/${owner}/${r}/${branch}/${path}`;
       const rawRes = await fetch(rawUrl);
-      if (rawRes.ok) {
-        return await rawRes.text();
-      }
+      if (rawRes.ok) return await rawRes.text();
 
       throw new Error(`파일 내용을 불러올 수 없습니다 (${path})`);
     }
 
     async function selectDocument(doc) {
+      if (isDeployedBuild) return;
+
       showLoader(true);
       try {
         let content = doc.rawContent;
@@ -1684,44 +1760,131 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
 
       if (prev) {
         prevCard.style.visibility = 'visible';
+        prevCard.href = prev.htmlPath;
+        prevCard.setAttribute('data-path', prev.path);
         document.getElementById('prev-doc-label').textContent = prev.title;
-        prevCard.onclick = () => selectDocument(prev);
       } else {
         prevCard.style.visibility = 'hidden';
-        prevCard.onclick = null;
       }
 
       if (next) {
         nextCard.style.visibility = 'visible';
+        nextCard.href = next.htmlPath;
+        nextCard.setAttribute('data-path', next.path);
         document.getElementById('next-doc-label').textContent = next.title;
-        nextCard.onclick = () => selectDocument(next);
       } else {
         nextCard.style.visibility = 'hidden';
-        nextCard.onclick = null;
       }
     }
 
     // ============================================================
-    // 6. 단일 커밋 원자적 다중 페이지 정적 빌드 배포 엔진
+    // 7. [AI 검색 최적화 극대화] 배포본 생성기 (cloned.createElement 버그 박멸)
     // ============================================================
-    function generatePageForDoc(doc, isHome, targetRepo, allDocs) {
+    function generatePageForDoc(doc, isHome, allDocs) {
       const cloned = document.documentElement.cloneNode(true);
 
-      // 관리자 전용 UI 완전 제거
+      // 1. 관리자 전용 UI 완전 박멸
       const fab = cloned.querySelector('.admin-fab');
       if (fab) fab.remove();
       const adminModal = cloned.querySelector('#admin-modal');
       if (adminModal) adminModal.remove();
+      const settingsAdminItem = cloned.querySelector('#btn-settings-open-admin');
+      if (settingsAdminItem) settingsAdminItem.remove();
 
-      // 메타데이터 설정
+      // 2. document.createElement로 안전하게 스크립트 플래그 생성
+      const scriptFlag = document.createElement('script');
+      scriptFlag.textContent = `
+        window.__IS_DEPLOYED_BUILD__ = true;
+        window.__MATHIT_DOCS_INDEX__ = ${JSON.stringify(allDocs.map(d => ({
+          title: d.title, category: d.category, path: d.path, htmlPath: d.htmlPath
+        })))};
+      `;
+      cloned.querySelector('head').appendChild(scriptFlag);
+
+      // 3. AI 검색엔진(GEO) & 카노니컬 메타 태그 최적화
       const pageTitle = isHome ? "Mathit - 기술 문서 플랫폼" : `${doc.title} - ${doc.category} | Mathit`;
       cloned.querySelector('title').textContent = pageTitle;
 
+      const pageCanonicalUrl = isHome ? `${PRODUCTION_BASE_URL}/index.html` : `${PRODUCTION_BASE_URL}/${doc.htmlPath}`;
       const canonical = cloned.querySelector('link[rel="canonical"]');
-      if (canonical) {
-        canonical.setAttribute('href', isHome ? `https://${targetRepo}/index.html` : `https://${targetRepo}/${doc.htmlPath}`);
-      }
+      if (canonical) canonical.setAttribute('href', pageCanonicalUrl);
 
+      // OpenGraph 태그 갱신
+      const ogTitle = cloned.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+      const ogUrl = cloned.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.setAttribute('content', pageCanonicalUrl);
+      const ogDesc = cloned.querySelector('meta[property="og:description"]');
+      const pageDesc = isHome ? "표준 디렉토리 구조 기반의 차세대 정적 기술 문서 사이트" : `${doc.category} - ${doc.title} 기술 명세 및 수식 가이드입니다.`;
+      if (ogDesc) ogDesc.setAttribute('content', pageDesc);
+
+      const metaDesc = cloned.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', pageDesc);
+
+      // 4. AI 이해를 위한 Schema.org JSON-LD 동적 생성 (TechArticle + BreadcrumbList)
+      const existingLd = cloned.querySelector('script[type="application/ld+json"]');
+      if (existingLd) existingLd.remove();
+
+      const schemaData = isHome ? {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Mathit",
+        "url": PRODUCTION_BASE_URL,
+        "description": "Mathit 수식 엔진 및 GitHub 연동 표준 기술 문서 플랫폼",
+        "inLanguage": "ko-KR"
+      } : {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "headline": doc.title,
+            "name": doc.title,
+            "description": `${doc.category} - ${doc.title} 기술 명세 및 가이드`,
+            "articleSection": doc.category,
+            "url": pageCanonicalUrl,
+            "inLanguage": "ko-KR",
+            "mainEntityOfPage": pageCanonicalUrl,
+            "about": {
+              "@type": "Thing",
+              "name": "Mathit Documentation"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Mathit",
+              "url": PRODUCTION_BASE_URL
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "문서 홈",
+                "item": `${PRODUCTION_BASE_URL}/index.html`
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": doc.category
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": doc.title,
+                "item": pageCanonicalUrl
+              }
+            ]
+          }
+        ]
+      };
+
+      const ldScript = document.createElement('script');
+      ldScript.type = 'application/ld+json';
+      ldScript.textContent = JSON.stringify(schemaData, null, 2);
+      cloned.querySelector('head').appendChild(ldScript);
+
+      // 5. 화면 표시 및 본문 프리렌더링
       const homeEl = cloned.querySelector('#home-view');
       const docEl = cloned.querySelector('#doc-page-view');
       const aiBtn = cloned.querySelector('#open-doc-ai');
@@ -1738,7 +1901,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         if (aiBtn) aiBtn.style.display = 'flex';
         if (moreBtn) moreBtn.style.display = 'flex';
 
-        // 독립 정적 페이지용 헤딩, 브레드크럼, 본문 및 목차 실시간 합성
         cloned.querySelector('#doc-breadcrumb-group').textContent = doc.category;
         cloned.querySelector('#doc-breadcrumb-title').textContent = doc.title;
         cloned.querySelector('#doc-main-heading').textContent = doc.title;
@@ -1777,6 +1939,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
 
         if (prev && prevCard) {
           prevCard.style.visibility = 'visible';
+          prevCard.href = prev.htmlPath;
           prevCard.querySelector('#prev-doc-label').textContent = prev.title;
         } else if (prevCard) {
           prevCard.style.visibility = 'hidden';
@@ -1784,6 +1947,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
 
         if (next && nextCard) {
           nextCard.style.visibility = 'visible';
+          nextCard.href = next.htmlPath;
           nextCard.querySelector('#next-doc-label').textContent = next.title;
         } else if (nextCard) {
           nextCard.style.visibility = 'hidden';
@@ -1835,24 +1999,66 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
             content = await fetchActualFileContent(doc.path);
             doc.rawContent = content;
           }
-          const fullHtml = generatePageForDoc(doc, false, targetRepo, appState.docListFlat);
+          const fullHtml = generatePageForDoc(doc, false, appState.docListFlat);
           commitFiles.push({ path: doc.htmlPath, content: fullHtml });
         }
 
-        // 2. 메인 홈 index.html 및 GitHub Pages 설정 파일
-        const indexHtml = generatePageForDoc(appState.docListFlat[0], true, targetRepo, appState.docListFlat);
+        // 2. 홈 화면 index.html 및 Cloudflare Pages 설정
+        const indexHtml = generatePageForDoc(appState.docListFlat[0], true, appState.docListFlat);
         commitFiles.push({ path: 'index.html', content: indexHtml });
         commitFiles.push({ path: '.nojekyll', content: '' });
 
-        // 3. sitemap.xml
-        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${commitFiles.map(f => `  <url><loc>https://${targetRepo}/${f.path}</loc></url>`).join('\n')}\n</urlset>`;
+        // 3. AI 크롤러 100% 개방 robots.txt 생성
+        const robotsTxt = `User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: ${PRODUCTION_BASE_URL}/sitemap.xml
+`;
+        commitFiles.push({ path: 'robots.txt', content: robotsTxt });
+
+        // 4. 표준 SEO sitemap.xml
+        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${commitFiles.filter(f => f.path.endsWith('.html')).map(f => `  <url><loc>${PRODUCTION_BASE_URL}/${f.path}</loc></url>`).join('\n')}
+</urlset>`;
         commitFiles.push({ path: 'sitemap.xml', content: sitemap });
 
-        // 4. AI 검색 매니페스트 llms.txt
-        const llmsTxt = `# ${targetRepo} Documentation\nGenerated by Mathit Multi-Page Engine\n\n${appState.docListFlat.map(d => `- [${d.title}](https://${targetRepo}/${d.htmlPath}): ${d.category}`).join('\n')}`;
+        // 5. AI 지식 매니페스트 llms.txt (표준 요약본)
+        const llmsTxt = `# Mathit Documentation
+> Domain: ${PRODUCTION_BASE_URL}
+> Architecture: High-performance Static Tech Documentation Platform with KaTeX Engine
+
+## Curated Technical Documents
+${appState.docListFlat.map(d => `- [${d.title}](${PRODUCTION_BASE_URL}/${d.htmlPath}): Category: ${d.category}`).join('\n')}
+`;
         commitFiles.push({ path: 'llms.txt', content: llmsTxt });
 
-        // 5. GitHub Git Data API (Tree Commit)로 단 1회의 원자적 커밋 생성
+        // 6. AI 문맥창 1회 완벽 주입용 llms-full.txt (전체 문서 원문 코퍼스)
+        let fullCorpus = `# Mathit Full Technical Documentation Corpus\n\n`;
+        for (const doc of appState.docListFlat) {
+          fullCorpus += `\n\n---\n# Document: ${doc.title} (Category: ${doc.category})\nURL: ${PRODUCTION_BASE_URL}/${doc.htmlPath}\n\n${doc.rawContent || ''}\n`;
+        }
+        commitFiles.push({ path: 'llms-full.txt', content: fullCorpus });
+
+        // 7. GitHub Git Data API 단일 원자적 커밋 푸시
         const [tOwner, tRepo] = targetRepo.split('/');
         const ghHeaders = {
           'Authorization': `token ${token}`,
@@ -1860,7 +2066,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           'Content-Type': 'application/json'
         };
 
-        // 최신 커밋 참조 조회
         let parentCommitSha = null;
         let baseTreeSha = null;
         const refRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/ref/heads/${targetBranch}`, { headers: ghHeaders });
@@ -1875,71 +2080,41 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
           }
         }
 
-        // Git Tree 생성
-        const treePayload = {
-          tree: commitFiles.map(f => ({
-            path: f.path,
-            mode: '100644',
-            type: 'blob',
-            content: f.content
-          }))
-        };
-        if (baseTreeSha) treePayload.base_tree = baseTreeSha;
-
         const treeRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/trees`, {
           method: 'POST',
           headers: ghHeaders,
-          body: JSON.stringify(treePayload)
+          body: JSON.stringify({
+            base_tree: baseTreeSha || undefined,
+            tree: commitFiles.map(f => ({ path: f.path, mode: '100644', type: 'blob', content: f.content }))
+          })
         });
 
-        if (!treeRes.ok) {
-          const err = await treeRes.json();
-          throw new Error(`Tree 생성 실패: ${err.message || treeRes.statusText}`);
-        }
-
+        if (!treeRes.ok) throw new Error('Git Tree 생성에 실패했습니다.');
         const newTree = await treeRes.json();
 
-        // Commit 객체 생성
         const newCommitRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/commits`, {
           method: 'POST',
           headers: ghHeaders,
           body: JSON.stringify({
-            message: `docs: deploy 100% identical multi-page docs via Mathit (${commitFiles.length} files)`,
+            message: `docs: deploy AI-optimized multi-page docs to ${PRODUCTION_BASE_URL} (${commitFiles.length} files)`,
             tree: newTree.sha,
             parents: parentCommitSha ? [parentCommitSha] : []
           })
         });
 
-        if (!newCommitRes.ok) {
-          const err = await newCommitRes.json();
-          throw new Error(`Commit 생성 실패: ${err.message || newCommitRes.statusText}`);
-        }
-
+        if (!newCommitRes.ok) throw new Error('Git Commit 생성에 실패했습니다.');
         const newCommit = await newCommitRes.json();
 
-        // Branch Ref 업데이트 (없을 경우 새로 생성)
-        let refUpdateRes;
-        if (parentCommitSha) {
-          refUpdateRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/refs/heads/${targetBranch}`, {
-            method: 'PATCH',
-            headers: ghHeaders,
-            body: JSON.stringify({ sha: newCommit.sha, force: true })
-          });
-        } else {
-          refUpdateRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/refs`, {
-            method: 'POST',
-            headers: ghHeaders,
-            body: JSON.stringify({ ref: `refs/heads/${targetBranch}`, sha: newCommit.sha })
-          });
-        }
+        const refUpdateRes = await fetch(`https://api.github.com/repos/${tOwner}/${tRepo}/git/refs${parentCommitSha ? `/heads/${targetBranch}` : ''}`, {
+          method: parentCommitSha ? 'PATCH' : 'POST',
+          headers: ghHeaders,
+          body: JSON.stringify(parentCommitSha ? { sha: newCommit.sha, force: true } : { ref: `refs/heads/${targetBranch}`, sha: newCommit.sha })
+        });
 
-        if (!refUpdateRes.ok) {
-          const err = await refUpdateRes.json();
-          throw new Error(`Branch 갱신 실패: ${err.message || refUpdateRes.statusText}`);
-        }
+        if (!refUpdateRes.ok) throw new Error('브랜치 갱신에 실패했습니다.');
 
         closeModal('admin-modal');
-        alert(`단일 원자적 커밋으로 다중 페이지 배포가 완료되었습니다!\n타깃 레포: ${targetRepo}\n브랜치: ${targetBranch}\n생성된 파일 수: ${commitFiles.length}개`);
+        alert(`AI 검색 최적화가 적용된 순수 배포본 푸시가 완료되었습니다!\n타깃 레포: ${targetRepo}\n공개 도메인: ${PRODUCTION_BASE_URL}\n생성 파일: ${commitFiles.length}개 (robots.txt, llms.txt, llms-full.txt 포함)`);
 
       } catch (err) {
         alert(err.message);
@@ -1949,7 +2124,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     }
 
     // ============================================================
-    // 7. 반응형 미디어 쿼리와 충돌 없는 순수 클래스 라우팅
+    // 8. 라우팅 & 모달 제어
     // ============================================================
     const homeView = document.getElementById('home-view');
     const docPageView = document.getElementById('doc-page-view');
@@ -1964,10 +2139,8 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         isDocMode = true;
         homeView.classList.add('hidden');
         docPageView.classList.add('active');
-        
         openDocAi.style.display = 'flex';
         openDocMore.style.display = 'flex';
-        
         closeAllModals();
         window.scrollTo(0, 0);
       });
@@ -1979,21 +2152,13 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         mobileTocBar.classList.remove('visible');
         docPageView.classList.remove('active');
         homeView.classList.remove('hidden');
-        
         openDocAi.style.display = 'none';
         openDocMore.style.display = 'none';
-        
         closeAllModals();
         window.scrollTo(0, 0);
       });
     }
 
-    document.querySelectorAll('.to-home-link').forEach(el => el.onclick = (e) => { e.preventDefault(); routeToHome(); });
-    document.getElementById('header-logo').onclick = routeToHome;
-
-    // ============================================================
-    // 8. 모달 & 로더 안전 제어 (탈출 불가 버그 해결)
-    // ============================================================
     function openModal(modalId) {
       const modal = document.getElementById(modalId);
       if (modal) {
@@ -2022,7 +2187,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       if (l) l.classList.toggle('active', show);
     };
 
-    // 로더 모달 클릭 시 탈출 보장
     const loaderModal = document.getElementById('loader-modal');
     if (loaderModal) {
       loaderModal.addEventListener('click', () => showLoader(false));
@@ -2048,7 +2212,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       });
     });
 
-    // 헤더 및 모달 버튼 바인딩
     const btnOpenSettings = document.getElementById('open-settings');
     if (btnOpenSettings) btnOpenSettings.onclick = () => openModal('settings-modal');
 
@@ -2083,12 +2246,11 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     const btnOpenMobileToc = document.getElementById('open-mobile-toc-btn');
     if (btnOpenMobileToc) btnOpenMobileToc.onclick = () => openModal('mobile-toc-modal');
 
-    // "Mathit 아카데미" 클릭 시 1.2초 후 정상 종료 처리
     const btnOpenLoader = document.getElementById('open-loader');
     if (btnOpenLoader) {
       btnOpenLoader.onclick = () => {
         showLoader(true);
-        setTimeout(() => showLoader(false), 1200);
+        setTimeout(() => showLoader(false), 1250);
       };
     }
 
@@ -2112,11 +2274,12 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     }
 
     // ============================================================
-    // 9. Layout Thrashing 제거 초경량 rAF 스크롤 감시자
+    // 9. rAF 스크롤 감시자 & 클립보드 & 검색
     // ============================================================
     let isScrollTicking = false;
     window.addEventListener('scroll', () => {
-      if (!isDocMode || isScrollTicking) return;
+      if (!isDocMode && !docPageView.classList.contains('active')) return;
+      if (isScrollTicking) return;
       isScrollTicking = true;
 
       requestAnimationFrame(() => {
@@ -2151,34 +2314,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       });
     }, { passive: true });
 
-    // ============================================================
-    // 10. 안전한 클립보드 복사 엔진
-    // ============================================================
-    function copyTextToClipboard(text, successCallback) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(successCallback).catch(() => fallbackCopy(text, successCallback));
-      } else {
-        fallbackCopy(text, successCallback);
-      }
-    }
-
-    function fallbackCopy(text, successCallback) {
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.top = '-9999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        if (successCallback) successCallback();
-      } catch (err) {
-        alert('복사에 실패했습니다.');
-      }
-      document.body.removeChild(textArea);
-    }
-
     document.addEventListener('click', (e) => {
       const copyBtn = e.target.closest('.code-box-copy');
       if (copyBtn) {
@@ -2186,16 +2321,13 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         e.stopPropagation();
         const codeEl = copyBtn.closest('.code-box')?.querySelector('code');
         const codeText = codeEl ? codeEl.innerText : '';
-        copyTextToClipboard(codeText, () => {
+        navigator.clipboard.writeText(codeText).then(() => {
           copyBtn.innerHTML = '<i class="ph ph-check"></i><span>복사됨</span>';
-          setTimeout(() => {
-            copyBtn.innerHTML = '<i class="ph ph-copy"></i><span>복사</span>';
-          }, 2000);
+          setTimeout(() => { copyBtn.innerHTML = '<i class="ph ph-copy"></i><span>복사</span>'; }, 2000);
         });
       }
     });
 
-    // 다크모드 토글
     const btnTheme = document.getElementById('btn-theme');
     if (btnTheme) {
       btnTheme.onclick = () => {
@@ -2204,9 +2336,6 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
       };
     }
 
-    // ============================================================
-    // 11. 디바운스 및 이벤트 위임 기반 실시간 검색 엔진
-    // ============================================================
     const searchInput = document.getElementById('search-input');
     const searchClear = document.getElementById('search-clear');
     const searchResults = document.getElementById('search-results');
@@ -2228,17 +2357,16 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
         searchDebounceTimer = setTimeout(() => {
           const filtered = appState.docListFlat.filter(d => 
             d.title.toLowerCase().includes(q) || 
-            d.category.toLowerCase().includes(q) ||
-            (d.rawContent && d.rawContent.toLowerCase().includes(q))
+            d.category.toLowerCase().includes(q)
           );
 
           if (searchEmpty) searchEmpty.style.display = filtered.length ? 'none' : 'block';
           if (searchResults) {
             searchResults.innerHTML = filtered.map(d => `
-              <div class="flex-between clickable search-result-item" data-path="${escapeHtml(d.path)}" style="padding:14px 0; border-bottom:1px solid var(--divider);">
+              <a href="${escapeHtml(d.htmlPath)}" class="flex-between clickable search-result-item" data-path="${escapeHtml(d.path)}" style="padding:14px 0; border-bottom:1px solid var(--divider); text-decoration:none; color:inherit; display:flex;">
                 <span style="font-size:15px;">${escapeHtml(d.title)}</span>
                 <span style="font-size:12px; color:var(--sub);">${escapeHtml(d.category)}</span>
-              </div>
+              </a>
             `).join('');
           }
         }, 120);
@@ -2248,7 +2376,8 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     if (searchResults) {
       searchResults.addEventListener('click', (e) => {
         const item = e.target.closest('.search-result-item');
-        if (item) {
+        if (item && !isDeployedBuild) {
+          e.preventDefault();
           const path = item.getAttribute('data-path');
           const targetDoc = appState.docListFlat.find(d => d.path === path);
           if (targetDoc) {
@@ -2269,7 +2398,7 @@ g<span class="mr-punctuation">(</span>x<span class="mr-punctuation">)</span> <sp
     }
 
     // ============================================================
-    // 12. 캐싱 기반 고무줄 제스처 엔진 (정규식/리플로우 제거)
+    // 10. 고무줄 제스처 엔진
     // ============================================================
     class RubberSlider {
       constructor(vp) {

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>수형도 - 확통, 이산수학, 벡터 | Mathit Docs</title>
   <meta name="description" content="수형도 공식 기술 문서">
-  <link rel="canonical" href="https://Kihun-Kang/Mathit-DOCS/5 확통, 이산수학, 벡터/5.3 수형도.html">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://Kihun-Kang/mathit-docs/5 확통, 이산수학, 벡터/5.3 수형도.html">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <script type="application/ld+json">
@@ -14,20 +16,813 @@
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "수형도",
-    "articleSection": "확통, 이산수학, 벡터"
+    "description": "수형도 공식 기술 문서"
   }
   </script>
+  <style>
+    
+    :root {
+      --primary: #ff7700;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+      --header-h: 60px;
+      --bg: #fff; --text: #111; --text-body: #374151; --sub: #64748b; --muted: #94a3b8;
+      --border: #e2e8f0; --divider: #f1f5f9; --input-bg: #f1f5f9;
+      --modal-bg: #fff; --overlay: rgba(0,0,0,0.45); --nav-active: #fff7ed;
+      --g1: #f1f5f9; --g1-t: #334155; --g2: #e2e8f0; --g2-t: #1e293b;
+      --g3: #cbd5e1; --g3-t: #0f172a; --g4: #94a3b8; --g5: #475569;
+      --send-btn: #0f172a; --code-bg: #f8fafc; --code-text: #0f172a;
+      --callout-info: #eff6ff; --callout-info-t: #1e40af;
+    }
+    /* 퓨어 무채색 블랙 다크모드 */
+    body.dark-mode {
+      --bg: #000000; --text: #f5f5f7; --text-body: #d1d5db; --sub: #86868b; --muted: #555555;
+      --border: #2c2c2e; --divider: #1c1c1e; --input-bg: #1c1c1e;
+      --modal-bg: #121212; --overlay: rgba(0,0,0,0.85); --nav-active: #221200;
+      --g1: #1c1c1e; --g1-t: #e5e5ea; --g2: #242426; --g2-t: #f2f2f7;
+      --g3: #333336; --g3-t: #ffffff; --g4: #48484a; --g5: #636366;
+      --send-btn: #2c2c2e; --code-bg: #181818; --code-text: #f5f5f7;
+      --callout-info: #1c1a17; --callout-info-t: #ffaa55;
+    }
+
+    /* View Transitions API */
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root) { animation: 0.16s cubic-bezier(0.16, 1, 0.3, 1) both vtOut; }
+    ::view-transition-new(root) { animation: 0.2s cubic-bezier(0.16, 1, 0.3, 1) both vtIn; }
+    @keyframes vtOut { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes vtIn { from { opacity: 0; } to { opacity: 1; } }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-weight: 400; }
+    body {
+      background: var(--bg); font-family: var(--font); color: var(--text);
+      padding-bottom: 60px; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+    }
+    b, strong, .semi-bold, .section-title, .action-title, .card-title, .community-subject, .btn-text, .modal-title, .toc-title, .doc-h1, .doc-h2 {
+      font-weight: 600 !important;
+    }
+    .mono { font-family: var(--mono) !important; }
+    .katex-font { font-family: 'KaTeX_Math', 'CMU Serif', serif; font-style: italic; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .flex-center { display: flex; align-items: center; }
+    .clickable { cursor: pointer; user-select: none; }
+
+    /* Header */
+    header {
+      height: var(--header-h); padding: 0 20px; position: sticky; top: 0; background: var(--bg); z-index: 100;
+      border-bottom: 1px solid transparent;
+    }
+    .logo { font-size: 32px; font-weight: 700; line-height: 1; }
+    .nav-icon { font-size: 22px; color: var(--text); cursor: pointer; display: flex; }
+
+    /* 모바일 서브 헤더 */
+    .mobile-toc-bar {
+      position: sticky; top: var(--header-h); z-index: 90; background: var(--bg);
+      border-bottom: 1px solid var(--border); padding: 10px 16px;
+      display: none; align-items: center; justify-content: space-between;
+    }
+    .mobile-toc-bar.visible { display: flex; }
+
+    /* 레이아웃 구조 */
+    .app-layout { width: 100%; }
+    .app-sidebar { display: none; }
+    .app-content { width: 100%; }
+
+    /* 메인 배너 & 액션 */
+    .hero-banner {
+      position: relative; background: var(--primary); border-radius: 4px;
+      min-height: 190px; margin: 0 16px 14px; padding: 28px 24px; overflow: hidden;
+    }
+    .hero-text { color: #fff; font-size: 28px; font-weight: 700; line-height: 1.25; white-space: pre-line; z-index: 1; position: relative; }
+    .hero-bg-m {
+      position: absolute; right: -10px; bottom: -60px; font-size: 240px;
+      color: rgba(255,255,255,0.18); pointer-events: none; line-height: 1;
+    }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 16px; }
+    .action-card { border-radius: 4px; padding: 18px 16px; color: #fff; font-size: 15px; }
+
+    /* 슬라이더 */
+    .section-title { margin: 32px 16px 12px; font-size: 18px; letter-spacing: -0.3px; }
+    .rubber-viewport { width: 100%; overflow: hidden; touch-action: pan-y; cursor: grab; }
+    .rubber-viewport:active { cursor: grabbing; }
+    .rubber-track { display: flex; gap: 12px; padding: 0 16px; will-change: transform; width: max-content; }
+    .card { border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between; }
+    .everywhere-card { width: 78vw; max-width: 320px; min-height: 140px; padding: 24px 20px; color: #fff; }
+    .gray-card { width: 62vw; max-width: 250px; min-height: 120px; padding: 20px 18px; font-size: 16px; }
+
+    /* 커뮤니티 */
+    .community-list { margin: 0 16px; }
+    .community-item { padding: 16px 0; border-bottom: 1px solid var(--divider); }
+    .community-item:last-child { border-bottom: none; }
+    .community-meta { font-size: 12px; color: var(--sub); margin-bottom: 6px; }
+    .community-subject { font-size: 15px; line-height: 1.4; margin-bottom: 8px; letter-spacing: -0.2px; }
+    .community-footer { display: flex; gap: 14px; font-size: 13px; color: var(--muted); }
+
+    /* AI 상자 */
+    .ai-container {
+      margin: 0 16px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 4px; padding: 16px; min-height: 130px; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .ai-textarea { width: 100%; border: none; outline: none; resize: none; background: transparent; font-family: inherit; font-size: 15px; color: var(--text); line-height: 1.4; }
+    .ai-textarea::placeholder { color: var(--muted); }
+    .ai-send-btn { background: var(--send-btn); color: #fff; padding: 8px 14px; border-radius: 4px; font-size: 13px; gap: 6px; }
+
+    /* 모달 & 바텀시트 */
+    .modal-overlay {
+      position: fixed; inset: 0; background: var(--overlay); z-index: 9990;
+      opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    
+    .bottom-sheet {
+      position: fixed; left: 0; right: 0; bottom: 0; background: var(--modal-bg);
+      border-radius: 16px 16px 0 0; padding: 12px 20px 36px; z-index: 9995;
+      transform: translateY(100%); box-shadow: none;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.25s, box-shadow 0.35s;
+    }
+    .bottom-sheet.active {
+      transform: translateY(0);
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+    }
+    .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 18px; }
+    .sheet-item { padding: 14px 10px; border-radius: 6px; }
+    .sheet-item:active { background: var(--divider); }
+
+    .fullscreen-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: none; flex-direction: column; }
+    .fullscreen-overlay.active { display: flex; }
+    .search-input-wrap { flex: 1; background: var(--input-bg); border-radius: 6px; padding: 8px 12px; gap: 8px; }
+
+    /* 사이드바 & 본문 링크 */
+    .toc-home { display: block; font-size: 15px; color: var(--primary); padding: 10px 12px; background: var(--nav-active); border-radius: 4px; text-decoration: none; margin-bottom: 20px; }
+    .toc-item a { display: block; padding: 7px 6px; font-size: 14px; color: var(--text); text-decoration: none; border-radius: 4px; }
+    .toc-item a:hover { background: var(--divider); }
+    .toc-item a.active { color: var(--primary); font-weight: 600 !important; background: var(--nav-active); }
+
+    /* 타이포그래피 */
+    #doc-page-view { display: none; }
+    .doc-article-wrap { width: 100%; max-width: 800px; padding: 0 16px; margin: 0 auto; }
+    .doc-toc-sidebar { display: none; }
+
+    .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--sub); margin: 14px 0 24px; }
+    .breadcrumb a { color: var(--sub); text-decoration: none; }
+
+    .doc-h1 { font-size: 32px; line-height: 1.25; color: var(--text); letter-spacing: -0.8px; margin-bottom: 12px; }
+    .doc-lead { font-size: 16px; color: var(--sub); line-height: 1.65; margin-bottom: 32px; letter-spacing: -0.2px; }
+    .doc-h2 { font-size: 22px; color: var(--text); margin: 48px 0 16px; letter-spacing: -0.4px; scroll-margin-top: 110px; }
+    .doc-p { font-size: 15px; line-height: 1.75; color: var(--text-body); margin-bottom: 18px; letter-spacing: -0.15px; }
+    .doc-p code { background: var(--code-bg); color: var(--primary); padding: 2px 6px; border-radius: 3px; font-size: 13.5px; }
+
+    /* 이미지 및 격리 박스 스타일 */
+    .doc-image-wrap { margin: 28px 0; text-align: center; }
+    .doc-img { max-width: 100%; height: auto; border-radius: 4px; display: inline-block; background: var(--divider); }
+    .doc-img-caption { margin-top: 8px; font-size: 13px; color: var(--sub); text-align: center; }
+    .quarantined-img-box {
+      display: flex; align-items: center; gap: 12px; background: var(--divider);
+      border-radius: 4px; padding: 14px 16px; margin: 20px 0; font-size: 13px; color: var(--sub); line-height: 1.5;
+    }
+    .quarantined-img-box i { font-size: 20px; color: var(--primary); flex-shrink: 0; }
+
+    /* 코드 블록 */
+    .code-box { position: relative; background: var(--code-bg); border-radius: 4px; padding: 16px 18px; margin: 18px 0 24px; color: var(--code-text); }
+    .code-box-copy { position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--sub); background: var(--bg); padding: 4px 8px; border-radius: 3px; z-index: 5; }
+    .code-box pre { overflow-x: auto; font-size: 13.5px; line-height: 1.6; padding-top: 4px; margin: 0; background: transparent !important; border: none !important; }
+    .code-box code { font-family: var(--mono) !important; }
+
+    .doc-callout { background: var(--callout-info); color: var(--callout-info-t); padding: 16px; border-radius: 4px; margin: 24px 0; display: flex; gap: 12px; font-size: 14px; line-height: 1.55; }
+    .doc-callout i { font-size: 20px; flex-shrink: 0; }
+
+    .feedback-box { margin: 52px 0 24px; padding: 20px; background: var(--divider); border-radius: 6px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .feedback-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--bg); border-radius: 4px; font-size: 13px; }
+    .feedback-btn.active { background: var(--primary); color: #fff; }
+
+    .github-save-action-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--divider); border-radius: 4px; padding: 14px 16px; margin: 24px 0;
+    }
+    .github-repo-badge { font-size: 13px; color: var(--sub); display: flex; align-items: center; gap: 6px; }
+    .github-commit-btn {
+      background: var(--primary); color: #fff; padding: 8px 14px; border-radius: 4px;
+      font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer;
+    }
+
+    .doc-pagination { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--divider); }
+    .page-nav-card { padding: 16px; background: var(--divider); border-radius: 4px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 4px; }
+    .doc-meta-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; font-size: 12px; color: var(--muted); }
+
+    .sub-option-group { display: flex; gap: 8px; margin-top: 6px; padding-left: 32px; }
+    .sub-option-badge { font-size: 12px; padding: 4px 8px; border-radius: 4px; background: var(--divider); color: var(--sub); }
+
+    .github-input-field {
+      width: 100%; border: 1px solid var(--border); background: var(--input-bg);
+      border-radius: 4px; padding: 10px 12px; font-size: 14px; color: var(--text);
+      font-family: inherit; margin-bottom: 12px; outline: none;
+    }
+
+    .spec-guide-box {
+      background: var(--divider); border-radius: 4px; padding: 14px; font-size: 12.5px;
+      color: var(--text-body); margin-bottom: 16px; line-height: 1.55;
+    }
+
+    .empty-state-notice {
+      padding: 40px 16px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6;
+    }
+
+    /* PC 데스크톱 화면 (1024px 이상) */
+    @media (min-width: 1024px) {
+      header { border-bottom-color: var(--border); padding: 0 32px; }
+      #open-doc { display: none !important; }
+      .mobile-toc-bar { display: none !important; }
+
+      .bottom-sheet {
+        top: 50%; left: 50%; bottom: auto; right: auto;
+        width: 480px; max-width: 90vw;
+        border-radius: 8px; padding: 24px 28px;
+        transform: translate(-50%, -46%);
+        opacity: 0; pointer-events: none;
+      }
+      .bottom-sheet.active {
+        transform: translate(-50%, -50%);
+        opacity: 1; pointer-events: auto;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+      }
+      .sheet-handle { display: none; }
+
+      .app-layout {
+        display: flex;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+      .app-sidebar {
+        display: block;
+        width: 250px;
+        min-width: 250px;
+        height: calc(100vh - var(--header-h));
+        position: sticky;
+        top: var(--header-h);
+        overflow-y: auto;
+        padding: 24px 20px 40px 0;
+        border-right: 1px solid var(--border);
+      }
+      .app-content {
+        flex: 1;
+        min-width: 0;
+        padding: 24px 0 60px 40px;
+      }
+
+      #doc-page-view {
+        display: none;
+        flex-direction: row;
+        gap: 36px;
+      }
+      .doc-article-wrap {
+        flex: 1;
+        max-width: 780px;
+        padding: 0;
+        margin: 0;
+      }
+      .doc-toc-sidebar {
+        display: block;
+        width: 200px;
+        min-width: 200px;
+        position: sticky;
+        top: calc(var(--header-h) + 24px);
+        height: max-content;
+      }
+      .doc-toc-sidebar ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-left: 1px solid var(--border);
+      }
+      .doc-toc-sidebar li a {
+        display: block;
+        padding-left: 12px;
+        font-size: 13px;
+        color: var(--sub);
+        text-decoration: none;
+        border-left: 2px solid transparent;
+        margin-left: -1px;
+      }
+      .doc-toc-sidebar li a.active {
+        color: var(--primary);
+        border-left-color: var(--primary);
+        font-weight: 600 !important;
+      }
+
+      #home-view {
+        max-width: 960px;
+        margin: 0;
+      }
+    }
+
+    /* TeX M 로더 */
+    .tex-loader { position: relative; font-family: 'KaTeX_Math', serif; font-style: italic; font-size: 110px; line-height: 1; color: var(--border); }
+    .tex-loader::after {
+      content: "M"; position: absolute; left: 0; top: 0; width: 100%; height: 0%;
+      overflow: hidden; color: var(--primary); animation: fillUp 2s infinite ease-in-out;
+    }
+    @keyframes fillUp { 0%, 100% { height: 0; } 50% { height: 100%; } }
+  
+  </style>
 </head>
-<body style="margin:0;font-family:Pretendard,sans-serif;background:#fff;color:#111;">
-  <header style="height:60px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid #e2e8f0;">
-    <strong style="font-size:24px;font-family:monospace;"><span style="color:#ff7700;">M</span>athit</strong>
+<body>
+  <header class="flex-between">
+    <div class="flex-center" style="gap: 14px;">
+      <i class="ph ph-list nav-icon" id="open-doc" title="목차 열기"></i>
+      <a href="../index.html" style="text-decoration:none; color:inherit;">
+        <span class="logo mono clickable"><span style="color: var(--primary);">M</span>athit</span>
+      </a>
+    </div>
+    <div class="flex-center" style="gap: 14px;">
+      <i class="ph ph-magnifying-glass nav-icon" id="open-search" title="검색"></i>
+      <i class="ph ph-moon nav-icon" id="btn-theme" title="다크모드"></i>
+      <i class="ph ph-gear nav-icon" id="open-settings" title="설정"></i>
+    </div>
   </header>
-  <div style="max-width:860px;margin:0 auto;padding:32px 20px;">
-    <div style="font-size:13px;color:#64748b;margin-bottom:16px;">문서 홈 &gt; 확통, 이산수학, 벡터 &gt; 수형도</div>
-    <h1 style="font-size:32px;letter-spacing:-0.8px;margin-bottom:24px;">수형도</h1>
-    <div id="content" style="line-height:1.75;color:#374151;">
-      <p class="doc-p" style="font-size:18px; font-weight:600; color:var(--text);">mathit-document</p>
+
+  <div class="mobile-toc-bar" id="mobile-toc-bar">
+    <span style="font-size: 13px; color: var(--text);" class="semi-bold" id="mobile-toc-current">수형도</span>
+    <div class="flex-center clickable" id="open-mobile-toc-sheet" style="gap: 4px; font-size: 12px; color: var(--sub); background: var(--divider); padding: 4px 8px; border-radius: 4px;">
+      <i class="ph ph-list-dashes"></i><span>소목차</span>
     </div>
   </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar" id="app-sidebar">
+      <a href="../index.html" class="toc-home to-home-link clickable">문서 홈</a>
+      <div id="sidebar-repo-tree">
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">개요</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../README.html" class="clickable doc-sidebar-link " data-path="README.md">README</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">기초 개념</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">2D 평면기하</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">주석과 스타일링</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">해석학</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">확통, 이산수학, 벡터</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link active" data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">입체기하와 공간도형</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">고급 엔진</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
+                  </li>
+                
+            </ul>
+          </div>
+        </div>
+    </aside>
+
+    <div class="app-content">
+      <!-- 홈 뷰 -->
+      <main id="home-view" style="display:none;">
+        <section class="hero-banner flex-center">
+          <div class="hero-text mono">Welcome to
+Mathit!</div>
+          <div class="hero-bg-m katex-font">M</div>
+        </section>
+        <div style="padding:20px 0; color:var(--text-body); line-height:1.7;">
+          <p class="doc-p">본 사이트는 Mathit Multi-Page SSG 엔진을 통해 자동 빌드된 완전한 기술 문서 사이트입니다. 좌측 목차를 클릭하여 각 문서를 확인하세요.</p>
+        </div>
+      </main>
+
+      <!-- 문서 뷰 -->
+      <div id="doc-page-view" style="display:flex;">
+        <article class="doc-article-wrap">
+          <nav class="breadcrumb">
+            <a href="../index.html">문서 홈</a>
+            <i class="ph ph-caret-right" style="font-size:10px;"></i>
+            <span>확통, 이산수학, 벡터</span>
+            <i class="ph ph-caret-right" style="font-size:10px;"></i>
+            <span style="color:var(--text);">수형도</span>
+          </nav>
+          <h1 class="doc-h1">수형도</h1>
+          <p class="doc-lead">확통, 이산수학, 벡터 / 수형도</p>
+          <div id="doc-parsed-content"><p class="doc-p" style="font-size:18px; font-weight:600; color:var(--text);">5.3 수형도</p><p class="doc-p">조건부 확률, 베이즈 정리, 경우의 수 단원에서 사건의 단계적 발생을 트리 구조로 표현할 때 <code>tree:</code> 지시어를 사용합니다.</p><h2 class="doc-h2" id="sec-1">수형도의 기본 구조</h2><p class="doc-p"><code>tree:</code> 지시어 내부에는 출발 노드에서 도착 노드로 이어지는 경로를 화살표 연산자 <code>-&gt;</code>로 나열합니다.</p>
+              <div class="code-box">
+                <div class="code-box-copy clickable" onclick="copyCode(this, `tree: {
+    root -&gt; " 비가="" 온다="" (0.4)"="" -=""> "우산을 쓴다 (0.8)", "우산을 안 쓴다 (0.2)";
+    root -&gt; "비가 안 온다 (0.6)" -&gt; "우산을 쓴다 (0.1)", "우산을 안 쓴다 (0.9)";
+}, layout=right, level_dist=35mm`)"&gt;
+                  <i class="ph ph-copy"></i><span>복사</span>
+                </div>
+                <pre><code class="language-text">tree: {
+    root -&gt; "비가 온다 (0.4)" -&gt; "우산을 쓴다 (0.8)", "우산을 안 쓴다 (0.2)";
+    root -&gt; "비가 안 온다 (0.6)" -&gt; "우산을 쓴다 (0.1)", "우산을 안 쓴다 (0.9)";
+}, layout=right, level_dist=35mm</code></pre>
+              </div>
+            <p class="doc-p">한 부모 노드에서 갈라져 나오는 자식 노드들은 쉼표(<code>,</code>)로 구분하여 나열합니다. 세미콜론(<code>;</code>)은 하나의 분기 경로가 끝났음을 선언합니다.</p><h2 class="doc-h2" id="sec-2">수형도 옵션 제어</h2><p class="doc-p">레이아웃의 방향과 간격은 지시어 블록 바깥의 속성으로 통제합니다.</p><p class="doc-p">첫째, 전개 방향을 지정하는 <code>layout</code>입니다.</p><p class="doc-p">국내 수학 교과서의 조건부 확률 문제에 주로 쓰이는 좌우 전개 방식은 <code>layout=right</code>를 줍니다. 조직도나 일반 계통도처럼 위에서 아래로 내려가는 전개는 <code>layout=down</code>을 사용합니다.</p><p class="doc-p">둘째, 단계 간의 간격을 정하는 <code>level_dist</code>입니다.</p><p class="doc-p"><code>level_dist=35mm</code>는 각 사건 단계 사이의 가로 거리를 35밀리미터로 넓혀, 노드 안의 텍스트가 서로 겹치지 않도록 물리적 안전 여백을 확보합니다.</p><p class="doc-p">셋째, 형제 노드 간의 간격을 정하는 <code>sibling_dist</code>입니다.</p><p class="doc-p">자식 노드가 세 개 이상으로 많아질 때 <code>sibling_dist=15mm</code>처럼 세로 간격을 넓혀 줄 간 겹침을 방지합니다.</p></div>
+        </article>
+        <aside class="doc-toc-sidebar">
+          <ul id="pc-toc-list">
+        <li><a href="#sec-1" class="toc-link active">수형도의 기본 구조</a></li>
+      
+        <li><a href="#sec-2" class="toc-link ">수형도 옵션 제어</a></li>
+      </ul>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- 모바일 소목차 바텀시트 -->
+  <div class="modal-overlay" id="mobile-toc-overlay"></div>
+  <div class="bottom-sheet" id="mobile-toc-sheet">
+    <div class="sheet-handle"></div>
+    <div class="flex-between" style="margin-bottom:16px;">
+      <span class="modal-title">이 페이지의 목차</span>
+      <i class="ph ph-x clickable" id="close-mobile-toc-sheet" style="font-size:20px; color:var(--sub);"></i>
+    </div>
+    <div id="mobile-toc-items-container">
+        <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-1')">
+          <span>수형도의 기본 구조</span>
+          <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+        </div>
+      
+        <div class="sheet-item flex-between clickable" onclick="jumpToSection('sec-2')">
+          <span>수형도 옵션 제어</span>
+          <i class="ph ph-caret-right" style="color:var(--muted);"></i>
+        </div>
+      </div>
+  </div>
+
+  <!-- 모바일 목차 오버레이 -->
+  <aside class="fullscreen-overlay" id="doc-overlay">
+    <div class="flex-between" style="padding:14px 20px; border-bottom:1px solid var(--border);">
+      <span class="modal-title">문서 목차</span><i class="ph ph-x nav-icon" id="close-doc"></i>
+    </div>
+    <div style="flex:1; overflow-y:auto; padding:20px 24px 40px;">
+      <a href="../index.html" class="toc-home">문서 홈</a>
+      <div>
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">개요</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../README.html" class="clickable doc-sidebar-link " data-path="README.md">README</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">기초 개념</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.1 식별자 규칙.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.1 식별자 규칙.md">식별자 규칙</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.2 캔버스와 뷰포트 설정.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.2 캔버스와 뷰포트 설정.md">캔버스와 뷰포트 설정</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.3 수치, 단위, 연산.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.3 수치, 단위, 연산.md">수치, 단위, 연산</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../1 기초 개념/1.4 색상과 텍스쳐.html" class="clickable doc-sidebar-link " data-path="1 기초 개념/1.4 색상과 텍스쳐.md">색상과 텍스쳐</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">2D 평면기하</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.1 점과 좌표계 다루기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.1 점과 좌표계 다루기.md">점과 좌표계 다루기</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.2 연결 연산자와 기본 도형.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.2 연결 연산자와 기본 도형.md">연결 연산자와 기본 도형</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.3 기하 내장 계산 엔진.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.3 기하 내장 계산 엔진.md">기하 내장 계산 엔진</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.4 삼각형의 7대 심.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.4 삼각형의 7대 심.md">삼각형의 7대 심</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../2 2D 평면기하/2.5 교점 탐색기.html" class="clickable doc-sidebar-link " data-path="2 2D 평면기하/2.5 교점 탐색기.md">교점 탐색기</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">주석과 스타일링</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.1 좌표축과 모눈종이 셋팅.md">좌표축과 모눈종이 셋팅</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.2 8방위 알아보기.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.2 8방위 알아보기.md">8방위 알아보기</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.3 기호 지시어.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.3 기호 지시어.md">기호 지시어</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.html" class="clickable doc-sidebar-link " data-path="3 주석과 스타일링/3.4 영역 채우기와 빗금 패턴.md">영역 채우기와 빗금 패턴</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">해석학</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.1 양함수 그래프.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.1 양함수 그래프.md">양함수 그래프</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.2 미분과 기하학적 접선.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.2 미분과 기하학적 접선.md">미분과 기하학적 접선</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.3 정적분과 두 곡선 사이의 넓이.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.3 정적분과 두 곡선 사이의 넓이.md">정적분과 두 곡선 사이의 넓이</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../4 해석학/4.4 고급 곡선 표현.html" class="clickable doc-sidebar-link " data-path="4 해석학/4.4 고급 곡선 표현.md">고급 곡선 표현</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">확통, 이산수학, 벡터</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.1 벡터와 선형대수.md">벡터와 선형대수</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.2 확률과 통계 시각화.md">확률과 통계 시각화</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.3 수형도.html" class="clickable doc-sidebar-link active" data-path="5 확통, 이산수학, 벡터/5.3 수형도.md">수형도</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../5 확통, 이산수학, 벡터/5.4 네트워크 그래프.html" class="clickable doc-sidebar-link " data-path="5 확통, 이산수학, 벡터/5.4 네트워크 그래프.md">네트워크 그래프</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">입체기하와 공간도형</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.1 3D 카메라 뷰포트.md">3D 카메라 뷰포트</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.2 기본 입체도형.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.2 기본 입체도형.md">기본 입체도형</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.4 숨은선 자동 점선 처리.md">숨은선 자동 점선 처리</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../6 입체기하와 공간도형/6.5 3D 매개변수 곡면.html" class="clickable doc-sidebar-link " data-path="6 입체기하와 공간도형/6.5 3D 매개변수 곡면.md">3D 매개변수 곡면</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">고급 엔진</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../7 고급 엔진/7.1 역기하 제약 해결사.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.1 역기하 제약 해결사.md">역기하 제약 해결사</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../7 고급 엔진/7.2 CSG 연산.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.2 CSG 연산.md">CSG 연산</a>
+                  </li>
+                
+                  <li class="toc-item">
+                    <a href="../7 고급 엔진/7.3 재사용 컴포넌트 제작.html" class="clickable doc-sidebar-link " data-path="7 고급 엔진/7.3 재사용 컴포넌트 제작.md">재사용 컴포넌트 제작</a>
+                  </li>
+                
+            </ul>
+          </div>
+        </div>
+    </div>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/gh/niteoowl/mathit-ren/mathit-ren-4.js"></script>
+  <script>
+    // 배포본 전용 인터랙션 스크립트 (다크모드, 모바일 메뉴, 하이라이트)
+    const btnTheme = document.getElementById('btn-theme');
+    btnTheme.onclick = () => {
+      const isDark = document.body.classList.toggle('dark-mode');
+      btnTheme.className = isDark ? 'ph ph-sun nav-icon' : 'ph ph-moon nav-icon';
+    };
+
+    const docOverlay = document.getElementById('doc-overlay');
+    document.getElementById('open-doc').onclick = () => docOverlay.classList.add('active');
+    document.getElementById('close-doc').onclick = () => docOverlay.classList.remove('active');
+
+    const mobileTocSheet = document.getElementById('mobile-toc-sheet');
+    const mobileTocOverlay = document.getElementById('mobile-toc-overlay');
+    document.getElementById('open-mobile-toc-sheet').onclick = () => {
+      mobileTocOverlay.classList.add('active');
+      mobileTocSheet.classList.add('active');
+    };
+    document.getElementById('close-mobile-toc-sheet').onclick = mobileTocOverlay.onclick = () => {
+      mobileTocOverlay.classList.remove('active');
+      mobileTocSheet.classList.remove('active');
+    };
+
+    function jumpToSection(id) {
+      mobileTocOverlay.classList.remove('active');
+      mobileTocSheet.classList.remove('active');
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('mobile-toc-bar');
+      if (window.innerWidth < 1024) {
+        if (window.scrollY > 80) bar.classList.add('visible');
+        else bar.classList.remove('visible');
+      }
+    });
+
+    if (window.MathitRen && typeof window.MathitRen.highlightAll === 'function') {
+      window.MathitRen.highlightAll();
+    }
+  </script>
 </body>
 </html>

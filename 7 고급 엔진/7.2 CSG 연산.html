@@ -109,13 +109,42 @@
     .everywhere-card { width: 78vw; max-width: 320px; min-height: 140px; padding: 24px 20px; color: #fff; }
     .gray-card { width: 62vw; max-width: 250px; min-height: 120px; padding: 20px 18px; font-size: 16px; }
 
-    /* 커뮤니티 */
-    .community-list { margin: 0 16px; }
+    /* 커뮤니티 블러 & 락 오버레이 */
+    .community-box {
+      position: relative;
+      margin: 0 16px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .community-list-blurred {
+      filter: blur(5px);
+      opacity: 0.35;
+      pointer-events: none;
+      user-select: none;
+    }
     .community-item { padding: 16px 0; border-bottom: 1px solid var(--divider); }
     .community-item:last-child { border-bottom: none; }
     .community-meta { font-size: 12px; color: var(--sub); margin-bottom: 6px; }
     .community-subject { font-size: 15px; line-height: 1.4; margin-bottom: 8px; letter-spacing: -0.2px; }
     .community-footer { display: flex; gap: 14px; font-size: 13px; color: var(--muted); }
+    
+    .community-lock-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+    .community-lock-badge {
+      font-size: 14.5px;
+      color: var(--text);
+      background: var(--bg);
+      padding: 10px 20px;
+      border-radius: 4px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--border);
+    }
 
     /* AI 상자 */
     .ai-container {
@@ -126,9 +155,7 @@
     .ai-textarea::placeholder { color: var(--muted); }
     .ai-send-btn { background: var(--send-btn); color: #fff; padding: 8px 14px; border-radius: 4px; font-size: 13px; gap: 6px; }
 
-    /* ============================================================
-       모달 & 바텀시트 (display: none 기반의 완전 무결한 제어)
-       ============================================================ */
+    /* 모달 시스템 (display 기반 안전 제어) */
     .modal-overlay {
       position: fixed; inset: 0; background: var(--overlay); z-index: 9990;
       display: none; justify-content: center; align-items: flex-end;
@@ -173,7 +200,7 @@
     .doc-p { font-size: 15px; line-height: 1.75; color: var(--text-body); margin-bottom: 18px; letter-spacing: -0.15px; }
     .doc-p code { background: var(--code-bg); color: var(--primary); padding: 2px 6px; border-radius: 3px; font-size: 13.5px; }
 
-    /* 이미지 및 격리 박스 스타일 */
+    /* 이미지 및 격리 박스 */
     .doc-image-wrap { margin: 28px 0; text-align: center; }
     .doc-img { max-width: 100%; height: auto; border-radius: 4px; display: inline-block; background: var(--divider); }
     .doc-img-caption { margin-top: 8px; font-size: 13px; color: var(--sub); text-align: center; }
@@ -228,15 +255,13 @@
       padding: 40px 16px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6;
     }
 
-    /* PC 데스크톱 화면 (1024px 이상): 중앙 팝업 다이얼로그 창 */
+    /* PC 데스크톱 화면 (1024px 이상): 중앙 팝업 다이얼로그 */
     @media (min-width: 1024px) {
       header { border-bottom-color: var(--border); padding: 0 32px; }
       #open-doc { display: none !important; }
       .mobile-toc-bar { display: none !important; }
 
-      .modal-overlay.active {
-        align-items: center;
-      }
+      .modal-overlay.active { align-items: center; }
       .bottom-sheet {
         width: 480px; max-width: 90vw;
         border-radius: 8px; padding: 24px 28px;
@@ -358,6 +383,17 @@
               
                   <li class="toc-item">
                     <a href="../README.html" class="clickable doc-sidebar-link " data-path="README.md">README</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">들어가기 전에</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link " data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                   </li>
                 
             </ul>
@@ -642,6 +678,17 @@
               
                   <li class="toc-item">
                     <a href="../README.html" class="clickable doc-sidebar-link " data-path="README.md">README</a>
+                  </li>
+                
+            </ul>
+          </div>
+        
+          <div style="margin-bottom:24px;">
+            <div style="font-size:12px; color:var(--sub); margin-bottom:8px;" class="semi-bold">들어가기 전에</div>
+            <ul style="list-style:none;">
+              
+                  <li class="toc-item">
+                    <a href="../0 들어가기 전에/개발자의 한마디.html" class="clickable doc-sidebar-link " data-path="0 들어가기 전에/개발자의 한마디.md">개발자의 한마디</a>
                   </li>
                 
             </ul>
